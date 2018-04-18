@@ -1,0 +1,12 @@
+.root {
+  display: block !important; /* Ignore Blocker */
+  padding: 1rem;
+  background-color: black;
+  background-color: var(--color-primary, black);
+  color: white;
+}
+
+.root pre {
+  overflow-y: auto;
+  max-width: 100%;
+}

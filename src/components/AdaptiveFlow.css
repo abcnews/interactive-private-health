@@ -1,0 +1,23 @@
+.root {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 0 -0.5rem;
+}
+
+@media (max-width: 20rem) {
+  .root {
+    margin: 0 -0.25rem;
+  }
+}
+
+.root > * {
+  flex: 1 1 14rem;
+  margin: 0 0.5rem 0.75rem;
+}
+
+@media (max-width: 20rem) {
+  .root > * {
+    margin: 0 0.25rem 1rem;
+  }
+}

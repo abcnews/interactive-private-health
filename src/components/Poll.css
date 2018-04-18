@@ -1,0 +1,73 @@
+@keyframes loading {
+  from {
+    opacity: 0.2;
+  }
+  to {
+    opacity: 0.6;
+  }
+}
+
+.root {
+  position: relative;
+}
+
+.root h3 {
+  margin-bottom: 0.75rem;
+}
+
+.root dl {
+  margin-bottom: 0;
+  transition: opacity 0.25s cubic-bezier(0, 0, 0.3, 1);
+}
+
+.root:not(.hasResults) dl {
+  opacity: 0.25;
+}
+
+.root dl > * {
+  font-size: 1.125rem;
+  font-weight: bold;
+}
+
+.label {
+  font-family: var(--font-serif);
+  text-transform: capitalize;
+}
+
+.value {
+  position: relative;
+  margin: 0.25rem 0 0.75rem;
+  height: 0.625rem;
+  background-color: #eee;
+  font-family: var(--font-sans);
+}
+
+.valueBar {
+  transform-origin: 0 0;
+  background-color: dimgray;
+  background-color: var(--color-secondary-saturated, dimgray);
+  width: 100%;
+  height: 100%;
+  transition: transform 0.5s cubic-bezier(0, 0, 0.3, 1);
+}
+
+.isChosen .valueBar {
+  background-color: black;
+  background-color: var(--color-primary, black);
+}
+
+.valuePct {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 0.25rem);
+}
+
+.isChosen .valuePct {
+  color: black;
+  color: var(--color-primary, black);
+}
+
+.root > p {
+  margin-top: 0.75rem;
+  text-align: right;
+}

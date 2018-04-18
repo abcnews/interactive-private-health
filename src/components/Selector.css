@@ -1,0 +1,159 @@
+.root {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.5rem -0.5rem;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+@media (max-width: 20rem) {
+  .root {
+    margin: 0.5rem -0.25rem;
+  }
+}
+
+.root > * {
+  flex: 1 1 auto;
+  margin: 0 0.5rem;
+}
+
+@media (max-width: 20rem) {
+  .root > * {
+    margin: 0 0.25rem;
+  }
+}
+
+.root > :first-child:nth-last-child(2),
+.root > :first-child:nth-last-child(2) ~ * {
+  width: 49%;
+}
+
+.root > :first-child:nth-last-child(3),
+.root > :first-child:nth-last-child(3) ~ * {
+  width: 33%;
+}
+
+.root > :first-child:nth-last-child(4),
+.root > :first-child:nth-last-child(4) ~ * {
+  width: 20%;
+}
+
+.root > button,
+.dropdown {
+  background-color: dimgrey;
+  background-color: var(--color-secondary, dimgrey);
+  transition: background-color 0.15s ease-out;
+}
+
+.root > button,
+.dropdown::after {
+  color: white;
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.0625rem;
+}
+
+.root > button,
+.dropdown > select {
+  border: 0;
+  border-radius: 0;
+  padding: 0.25rem 0.5rem;
+  height: 2.5rem;
+  cursor: pointer;
+}
+
+.root [disabled] {
+  cursor: not-allowed;
+}
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown select,
+.dropdown::after {
+  padding: 0 0.5rem;
+  width: 100%;
+  min-width: 3.5rem;
+}
+
+button + .dropdown select,
+button + .dropdown::after {
+  padding-right: 1.75rem;
+}
+
+.dropdown select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  outline-offset: 0;
+  font-size: 16px;
+}
+
+.dropdown select::-ms-expand {
+  display: none;
+}
+
+.dropdown::after {
+  content: attr(data-label);
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: inherit;
+  background-image: url(./Selector.svg);
+  background-position: calc(100% - 0.625rem) calc(50% - 0.0625rem);
+  background-repeat: no-repeat;
+  background-size: 0.875rem 0.4375rem;
+  line-height: 2.5rem;
+  pointer-events: none;
+}
+
+button.number,
+.dropdown.number::after {
+  font-size: 0.9375rem;
+}
+
+button.chosen,
+.dropdown.chosen {
+  background-color: black;
+  background-color: var(--color-secondary-dark, black);
+}
+
+.innerFocusRing {
+  display: none;
+  position: absolute;
+  top: 0.125rem;
+  right: 0.125rem;
+  bottom: 0.125rem;
+  left: 0.125rem;
+  z-index: 1;
+  outline: 0.0625rem dashed white;
+  pointer-events: none;
+}
+
+_:-ms-fullscreen,
+:root .dropdown select:focus + .innerFocusRing {
+  display: block;
+}
+
+@supports (-ms-ime-align: auto) {
+  .dropdown select:focus + .innerFocusRing {
+    display: block;
+  }
+}
+
+@supports (-moz-appearance: meterbar) {
+  .dropdown select:focus + .innerFocusRing {
+    display: block;
+    outline: 0.0625rem dotted black;
+    top: 0.3125rem;
+    right: 0.4375rem;
+    bottom: 0.3125rem;
+    left: 0.4375rem;
+  }
+}

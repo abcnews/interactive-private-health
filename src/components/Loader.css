@@ -1,0 +1,31 @@
+@keyframes loading {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.root {
+  margin: auto;
+  text-indent: -9999rem;
+  border: 0.125rem solid rgba(43, 50, 55, 0.3);
+  border-left-color: rgba(43, 50, 55, 0.6);
+  border-radius: 50%;
+  width: 3rem;
+  height: 3rem;
+  animation: loading 1s infinite linear;
+}
+
+.isInverted {
+  border: 0.125rem solid rgba(255, 255, 255, 0.25);
+  border-left-color: rgba(255, 255, 255, 1);
+}
+
+.isOverlay {
+  margin: -1.5rem 0 0 -1.5rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}

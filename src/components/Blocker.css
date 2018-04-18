@@ -1,0 +1,16 @@
+.root {
+  margin: 32rem auto 8rem;
+  max-width: 14rem;
+  font-size: 5rem;
+  text-align: center;
+}
+
+.root > div {
+  font-size: 5rem;
+  -webkit-filter: grayscale(1);
+  filter: grayscale(1);
+}
+
+.root ~ * {
+  display: none;
+}

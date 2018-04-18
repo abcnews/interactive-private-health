@@ -1,0 +1,11 @@
+.root {
+  color: black;
+  color: var(--color-primary, black);
+  font-weight: bold;
+}
+
+br + .root {
+  display: inline-block;
+  padding-top: 0.5rem;
+  font-size: 1.25em;
+}

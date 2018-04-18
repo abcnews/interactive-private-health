@@ -1,0 +1,93 @@
+.root :global(.u-richtext) > div:last-child {
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 43.75rem) and (max-width: 61.1875rem) {
+  .root :global(.u-richtext) > div:last-child {
+    margin-bottom: 2rem;
+  }
+}
+
+@media (min-width: 61.25rem) {
+  .root :global(.u-richtext) > div:last-child {
+    margin-bottom: 2.25rem;
+  }
+}
+
+.root h2::before {
+  content: '';
+  display: block;
+  margin: 3rem auto 1.25rem;
+  width: 10rem;
+  height: 0.125rem;
+  background-color: hsla(0, 0%, 70%, 0.7);
+}
+
+.root :global(.u-richtext) h3,
+.root :global(.u-richtext) h4 {
+  font-family: var(--font-serif);
+}
+
+.root h3,
+.root h4 {
+  text-align: center;
+}
+
+.root h3 {
+  font-size: 1.5rem;
+}
+
+.root h4 {
+  margin-bottom: 0.75rem;
+}
+
+.root h5 {
+  margin: 0;
+  font-family: var(--font-sans);
+  white-space: nowrap;
+}
+
+.root small {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  letter-spacing: 0.03125rem;
+  color: dimgrey;
+  color: var(--color-grey, dimgrey);
+}
+
+.root small:first-child:last-child {
+  display: block;
+}
+
+.root table {
+  width: 100%;
+}
+
+.root thead th {
+  font-size: 0.75rem;
+}
+
+@media (min-width: 43.75rem) {
+  .root thead th {
+    font-size: 0.9375rem;
+  }
+}
+
+.root tbody th {
+  max-width: 14em;
+  font-size: 0.8125rem;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+@media (min-width: 43.75rem) {
+  .root tbody th {
+    font-size: 1rem;
+  }
+}
+
+.root thead th,
+.root tbody td {
+  text-align: right;
+}

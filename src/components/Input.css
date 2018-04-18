@@ -1,0 +1,88 @@
+@keyframes hint {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.2;
+  }
+}
+
+.root {
+  position: relative;
+  margin: 0.5rem 0;
+  background-color: white;
+  cursor: pointer;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.root input {
+  outline-offset: 0;
+  border: 0.0625rem solid black;
+  border-color: var(--color-secondary-dark, black);
+  border-radius: 0;
+  padding: 0.1875rem 2rem 0.1875rem 0.75rem;
+  width: 100%;
+  height: 2.5rem;
+  background-color: transparent;
+  color: black;
+  box-shadow: none;
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease-out;
+}
+
+.editing input {
+  border-color: dimgray;
+  border-color: var(--color-secondary, dimgray);
+}
+
+@media (-webkit-min-device-pixel-ratio: 0) and (max-width: 64rem) {
+  /* Disable iOS control zoom */
+  .root input {
+    font-size: 16px;
+  }
+}
+
+.root input[disabled] {
+  cursor: not-allowed;
+}
+
+.root input::placeholder {
+  color: dimgrey;
+  color: var(--color-secondary-darker, dimgrey);
+  font-size: 0.8125rem;
+  letter-spacing: 0.03125rem;
+}
+
+.root input::-webkit-inner-spin-button {
+  display: none;
+}
+
+.root::before,
+.root::after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 2rem;
+  height: 2.5rem;
+}
+
+.root::before {
+  opacity: 0;
+  background-color: dimgray;
+  background-color: var(--color-secondary, dimgray);
+  animation: hint 0.5s infinite alternate forwards;
+}
+
+.root::after {
+  background-image: url(./Input.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 0.3125rem 0.5625rem;
+}
+
+.editing::before,
+.editing::after {
+  content: '';
+}
