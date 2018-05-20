@@ -8,8 +8,19 @@ class Input extends Component {
     this.onChange = this.onChange.bind(this);
     this.onInput = this.onInput.bind(this);
     this.onKeyDown = this.onKeyDown.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
 
     this.state = { value: null };
+  }
+
+  onChange({ target: { value = null } }) {
+    this.setState({ value: null });
+
+    if (value === this.props.value) {
+      return;
+    }
+
+    this.props.onChange({ name: this.props.name, value: value ? value : null });
   }
 
   onInput({ target: { value = null } }) {
@@ -28,29 +39,26 @@ class Input extends Component {
     }
   }
 
-  onChange({ target: { value = null } }) {
-    this.setState({ value: null });
-
-    if (value === this.props.value) {
-      return;
-    }
-
-    this.props.onChange({ name: this.props.name, value: value ? value : null });
+  onSubmit(event) {
+    event.preventDefault();
   }
 
   render({ type, name, value, placeholder, attributes = {} }) {
     return (
       <div className={`${styles.root}${this.state.value !== null ? ` ${styles.editing}` : ''}`} data-name={name}>
-        <input
-          name={name}
-          type={type || 'text'}
-          value={this.state.value !== null ? this.state.value : value}
-          placeholder={placeholder}
-          onBlur={this.onChange}
-          onInput={this.onInput}
-          onKeyDown={this.onKeyDown}
-          {...attributes}
-        />
+        <form onSubmit={this.onSubmit}>
+          <input
+            name={name}
+            type={type || 'text'}
+            value={this.state.value !== null ? this.state.value : value}
+            placeholder={placeholder}
+            onBlur={this.onChange}
+            onInput={this.onInput}
+            onKeyDown={this.onKeyDown}
+            {...attributes}
+          />
+          <button type="submit" tabIndex="-1" />
+        </form>
       </div>
     );
   }

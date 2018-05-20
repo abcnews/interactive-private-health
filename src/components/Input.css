@@ -59,30 +59,33 @@
   display: none;
 }
 
-.root::before,
-.root::after {
+.root button {
+  display: none;
   position: absolute;
-  top: 0;
-  right: 0;
-  width: 2rem;
-  height: 2.5rem;
-}
-
-.root::before {
-  opacity: 0;
-  background-color: dimgray;
-  background-color: var(--color-secondary, dimgray);
-  animation: hint 0.5s infinite alternate forwards;
-}
-
-.root::after {
+  top: 0.0625rem;
+  right: 0.0625rem;
+  width: 1.9375rem;
+  height: 2.375rem;
+  border: none;
   background-image: url(./Input.svg);
   background-position: center;
   background-repeat: no-repeat;
   background-size: 0.3125rem 0.5625rem;
 }
 
-.editing::before,
-.editing::after {
+.editing button {
+  display: block;
+}
+
+.root button::before {
   content: '';
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: dimgray;
+  background-color: var(--color-secondary, dimgray);
+  animation: hint 0.5s infinite alternate forwards;
 }
