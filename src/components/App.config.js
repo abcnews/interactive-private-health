@@ -77,10 +77,10 @@ module.exports.DEV_STATE = {
   relationship: 'single',
   income: '99000',
   children: '0',
-  age: '83',
+  age: '64',
   partnerAge: null,
-  ageOnJul1: null,
-  isInsured: null,
+  ageOnJul1: '64',
+  isInsured: 'no',
   ageWhenInsuranceTaken: null,
   location: 'Queensland',
   sex: 'male',
@@ -425,8 +425,8 @@ module.exports.getComputedState = ({
       ? null
       : wasInsuredBeforeJul2000
         ? 0
-        : loadingAccrualYears - yearsInsured;
-  const loading = loadingYears === null ? null : Math.max(0, Math.min(0.7, loadingYears * 0.02));
+        : Math.max(0, loadingAccrualYears - yearsInsured);
+  const loading = loadingYears === null ? null : Math.min(0.7, loadingYears * 0.02);
   const loadingCode = wasBornBeforeJuly1934
     ? 'before1934'
     : loadingAge !== null && loadingAge < 31
