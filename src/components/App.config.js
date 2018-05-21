@@ -12,7 +12,7 @@ const FIELDS = (module.exports.FIELDS = {
   relationship: { choices: ['single', 'couple'] },
   income: {
     type: 'number',
-    placeholder: state => `Enter your${state.relationship === 'couple' ? ' combined' : ''} taxable income`,
+    placeholder: state => `Enter your${state.relationship == 'couple' ? ' combined' : ''} taxable income`,
     attributes: {
       min: 0,
       max: 1e9,
@@ -40,7 +40,7 @@ const FIELDS = (module.exports.FIELDS = {
   },
   ageOnJul1: {
     choices: state =>
-      state.age === null
+      state.age == null
         ? []
         : JUL_1_DIFF < 0
           ? [state.age, String(+state.age + 1)]
@@ -315,10 +315,10 @@ const TOP_N_COVERED_PROCEDURES = [
 ]; // x=age; y=sex; z=procedures
 
 const getWaitingProcedures = (age, sex) =>
-  age === null || sex === null
+  age == null || sex == null
     ? null
     : WAITING_TIMES_PROCEDURES[Math.min(WAITING_TIMES_PROCEDURES.length - 1, Math.round(age / 5))][
-        sex === 'female' ? 0 : 1
+        sex == 'female' ? 0 : 1
       ].map(procedure => ({
         name: PROCEDURES[procedure][0],
         description: PROCEDURES[procedure][1],
@@ -327,10 +327,10 @@ const getWaitingProcedures = (age, sex) =>
       }));
 
 const getTopNProcedures = (age, sex) =>
-  age === null || sex === null
+  age == null || sex == null
     ? null
     : TOP_N_COVERED_PROCEDURES[Math.min(TOP_N_COVERED_PROCEDURES.length - 1, Math.round(age / 5))][
-        sex === 'female' ? 0 : 1
+        sex == 'female' ? 0 : 1
       ].map(procedure => ({
         name: PROCEDURES[procedure][0],
         description: PROCEDURES[procedure][1],
@@ -346,7 +346,7 @@ const getKidsProcedures = getFn =>
     (memo, age) => {
       FIELDS.sex.choices.forEach(sex => {
         getFn(age, sex).forEach(procedure => {
-          if (memo.names.indexOf(procedure.name) === -1) {
+          if (memo.names.indexOf(procedure.name) == -1) {
             memo.names.push(procedure.name);
             memo.procedures.push(procedure);
           }
@@ -379,13 +379,13 @@ module.exports.getComputedState = ({
       ? null
       : children == 0
         ? relationship
-        : relationship === 'single'
+        : relationship == 'single'
           ? 'singleParent'
           : 'family';
-  const incomeRelationshipFactor = household === null ? null : household === 'single' ? 1 : 2;
-  const incomeChildOffset = children === null ? null : children > 1 ? 1500 * (children - 1) : 0;
+  const incomeRelationshipFactor = household == null ? null : household == 'single' ? 1 : 2;
+  const incomeChildOffset = children == null ? null : children > 1 ? 1500 * (children - 1) : 0;
   const incomeTier =
-    income === null || household === null
+    income == null || household == null
       ? null
       : income <= 90000 * incomeRelationshipFactor + incomeChildOffset
         ? 0
@@ -394,50 +394,50 @@ module.exports.getComputedState = ({
           : income <= 140000 * incomeRelationshipFactor + incomeChildOffset
             ? 2
             : 3;
-  const surcharge = incomeTier === null ? null : Math.round(income * SURCHARGES[incomeTier]);
+  const surcharge = incomeTier == null ? null : Math.round(income * SURCHARGES[incomeTier]);
   const lowIncomeSaving =
-    relationship === 'single' || incomeTier === null || incomeTier === 0
+    relationship == 'single' || incomeTier == null || incomeTier == 0
       ? null
       : Math.round(LOW_INCOME_THRESHOLD * SURCHARGES[incomeTier]);
   const coverBasic = household ? PREMIUMS_2018['basic'][household] : null;
   const coverMedium = household ? PREMIUMS_2018['medium'][household] : null;
   const coverTop = household ? PREMIUMS_2018['top'][household] : null;
-  const age = _age === null ? null : +_age;
+  const age = _age == null ? null : +_age;
   const oldestAge = age ? Math.max(age, partnerAge || 0) : null;
   const rebate =
-    incomeTier === null || age === null || (relationship === 'couple' && partnerAge === null)
+    incomeTier == null || age == null || (relationship == 'couple' && partnerAge == null)
       ? null
       : REBATES[oldestAge < 65 ? 0 : oldestAge < 70 ? 1 : 2][incomeTier];
   const reducedCoverBasic = rebate != null ? (coverBasic * (1 - rebate)).toFixed(0) : null;
   const reducedCoverMedium = rebate != null ? (coverMedium * (1 - rebate)).toFixed(0) : null;
   const reducedCoverTop = rebate != null ? (coverTop * (1 - rebate)).toFixed(0) : null;
-  const loadingAge = JUL_1_DIFF > 0 ? (ageOnJul1 === null ? null : +ageOnJul1) : age;
-  const wasBornBeforeJuly1934 = ageOnJul1 === null ? null : +ageOnJul1 + (JUL_1_DIFF > 0 ? 1 : 0) > YEARS_SINCE_1934;
-  const willAccrueLoading = !wasBornBeforeJuly1934 && loadingAge !== null && loadingAge >= 31;
+  const loadingAge = JUL_1_DIFF > 0 ? (ageOnJul1 == null ? null : +ageOnJul1) : age;
+  const wasBornBeforeJuly1934 = ageOnJul1 == null ? null : +ageOnJul1 + (JUL_1_DIFF > 0 ? 1 : 0) > YEARS_SINCE_1934;
+  const willAccrueLoading = !wasBornBeforeJuly1934 && loadingAge != null && loadingAge >= 31;
   const loadingAccrualYears = Math.max(0, loadingAge - (JUL_1_DIFF < 0 ? 31 : 30));
   const yearsInsured =
-    isInsured === null || whenInsured === null
+    isInsured == null || whenInsured == null
       ? 0
       : FIELDS.whenInsured.choices.length - 1 - FIELDS.whenInsured.choices.indexOf(whenInsured);
   const wasInsuredBeforeJul2000 = yearsInsured > YEARS_SINCE_2000;
   const loadingYears =
-    loadingAge === null || isInsured === null || (isInsured === 'yes' && whenInsured === null)
+    loadingAge == null || isInsured == null || (isInsured == 'yes' && whenInsured == null)
       ? null
       : wasInsuredBeforeJul2000
         ? 0
         : Math.max(0, loadingAccrualYears - yearsInsured);
-  const loading = loadingYears === null ? null : Math.min(0.7, loadingYears * 0.02);
+  const loading = loadingYears == null ? null : Math.min(0.7, loadingYears * 0.02);
   const loadingCode = wasBornBeforeJuly1934
     ? 'before1934'
-    : loadingAge !== null && loadingAge < 31
+    : loadingAge != null && loadingAge < 31
       ? 'under31'
-      : loadingYears === null
+      : loadingYears == null
         ? null
-        : loadingYears === 0
+        : loadingYears == 0
           ? 'continuous'
           : 'without';
   const totalCoverPaid = (thisYearOffset => {
-    if (thisYearOffset === null) {
+    if (thisYearOffset == null) {
       return null;
     }
 
@@ -449,10 +449,10 @@ module.exports.getComputedState = ({
 
     return Math.round(total);
   })(loadingYears);
-  const totalExtraToPay = loading === null ? null : Math.round(MEDIUM_SINGLE_PREMIUMS_NEXT_10_YEARS_TOTAL * loading);
+  const totalExtraToPay = loading == null ? null : Math.round(MEDIUM_SINGLE_PREMIUMS_NEXT_10_YEARS_TOTAL * loading);
   const locationCode = location ? LOCATION_CODES[location] : null;
   const coverage =
-    age === null || sex === null
+    age == null || sex == null
       ? null
       : COVERAGE_PROPORTION[sex][Math.min(COVERAGE_PROPORTION[sex].length - 1, Math.floor(age / 5))];
   const waiting = getWaitingProcedures(age, sex);
