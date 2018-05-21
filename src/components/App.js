@@ -5,9 +5,11 @@ const Dev = require('./Dev');
 const Input = require('./Input');
 const Poll = require('./Poll');
 const ProceduresTable = require('./ProceduresTable');
+const RelativeBars = require('./RelativeBars');
 const Result = require('./Result');
 const Section = require('./Section');
 const Selector = require('./Selector');
+const Split = require('./Split');
 const {
   DEV_STATE,
   FIELDS,
@@ -17,6 +19,8 @@ const {
   LINKS,
   LOW_INCOME_THRESHOLD,
   ORDINAL,
+  REASONS_FOR_HAVING,
+  REASONS_FOR_NOT_HAVING,
   getComputedState
 } = require('./App.config');
 const styles = require('./App.css');
@@ -369,6 +373,20 @@ class App extends Component {
               {this.renderResult('coverage', 'percentage')}
               {` have hospital cover.`}
             </p>
+            <Split>
+              <div>
+                <label>
+                  Reasons for <strong>having</strong> private health insurance
+                </label>
+                <RelativeBars items={REASONS_FOR_HAVING} color={'#FCBA04'} />
+              </div>
+              <div>
+                <label>
+                  Reasons for <strong>not having</strong> private health insurance
+                </label>
+                <RelativeBars items={REASONS_FOR_NOT_HAVING} color={'#00C6F7'} />
+              </div>
+            </Split>
           </Section>
         ) : (
           <Blocker />

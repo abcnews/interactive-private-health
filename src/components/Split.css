@@ -1,0 +1,46 @@
+.root {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 0 -0.75rem;
+}
+
+@media (max-width: 20rem) {
+  .root {
+    margin: 0 -0.5rem;
+  }
+}
+
+.root > * {
+  position: relative;
+  flex: 1 1 40%;
+  margin: 0 0.75rem;
+  padding: 0.5rem 0;
+}
+
+@media (max-width: 20rem) {
+  .root > * {
+    margin: 0 0.5rem;
+    padding: 0.25rem 0;
+  }
+}
+
+.root > :not(:last-child)::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: -0.75rem;
+  width: 0.0625rem;
+  height: 100%;
+  background-color: rgba(151, 151, 151, 0.3);
+}
+
+@media (max-width: 20rem) {
+  .root > :not(:last-child)::before {
+    right: -0.5rem;
+  }
+}
+
+.root label {
+  font-family: var(--font-sans);
+}

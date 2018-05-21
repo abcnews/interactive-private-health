@@ -362,6 +362,35 @@ const getKidsProcedures = getFn =>
 const WAITING_KIDS = getKidsProcedures(getWaitingProcedures);
 const TOP_N_KIDS = getKidsProcedures(getTopNProcedures);
 
+module.exports.REASONS_FOR_HAVING = {
+  'Security, protection, peace of mind': 0.679,
+  'Allows treatment as private patient in hospital': 0.473,
+  "Provides benefits for ancillary services, 'extras'": 0.432,
+  'Shorter wait for treatment, concern over public hospital waiting lists': 0.429,
+  'Choice of doctor': 0.342,
+  'Always had it, parents pay it, condition of job': 0.295,
+  'To gain government benefits, avoid extra Medicare levy': 0.219,
+  'Lifetime cover, avoid age surcharge': 0.211,
+  'Elderly, getting older, likely to need treatment': 0.151,
+  'Has illness, condition that requires treatment': 0.101,
+  'Other financial reasons': 0.043,
+  'Other reasons': 0.05
+};
+
+module.exports.REASONS_FOR_NOT_HAVING = {
+  "Can't afford it, too expensive": 0.609,
+  'Medicare cover sufficient': 0.291,
+  'Lack of value for money, not worth it': 0.177,
+  "Don't need medical care, in good health, have no dependants": 0.114,
+  "Pensioners, Veterans' Affairs, health concession card": 0.095,
+  "Not high priority, previously included in parent's cover": 0.083,
+  "Disillusioned about having to pay 'out of pocket' costs/gap fees": 0.08,
+  'Prepared to pay cost of private treatment from own resources': 0.047,
+  "Won't pay Medicare levy and private health insurance premium": 0.036,
+  'High risk category': 0.012,
+  Other: 0.06
+};
+
 module.exports.getComputedState = ({
   relationship,
   income,

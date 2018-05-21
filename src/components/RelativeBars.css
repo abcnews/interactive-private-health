@@ -1,0 +1,28 @@
+.root {
+  font-family: var(--font-sans);
+}
+
+.name {
+  margin-top: 1.25rem;
+  font-size: 0.8125rem;
+}
+
+.value {
+  margin: 0.25rem 3rem 0 0;
+}
+
+.bar {
+  display: inline-block;
+  position: relative;
+  height: 0.625rem;
+  background-color: black;
+}
+
+.label {
+  position: absolute;
+  top: -0.125rem;
+  left: 100%;
+  padding-left: 0.25rem;
+  font-size: 0.9325rem;
+  line-height: 1;
+}
