@@ -232,7 +232,11 @@ class App extends Component {
               <br />
               {this.renderResult('rebate', 'percentage')}
             </h3>
-            <p>This reduces your average hospital premiums to:</p>
+            <p>
+              {this.computedState.rebate
+                ? 'This reduces your average hospital premiums to:'
+                : 'Your average hospital premiums are:'}
+            </p>
             <ul>
               <li>
                 {this.renderResult('reducedCoverBasic')}
@@ -414,7 +418,7 @@ class App extends Component {
               procedures={this.computedState.topN}
               columns={[
                 ['totalCost', 'Total cost', 'dollarAmount'],
-                ['oop', 'Average out-of-pocket cost', 'dollarAmount']
+                ['oop', 'Median out-of-pocket cost', 'dollarAmount']
               ]}
             />
             {this.has(['topNKids']) && (
@@ -425,7 +429,7 @@ class App extends Component {
                 procedures={this.computedState.topNKids}
                 columns={[
                   ['totalCost', 'Total cost', 'dollarAmount'],
-                  ['oop', 'Average out-of-pocket cost', 'dollarAmount']
+                  ['oop', 'Median out-of-pocket cost', 'dollarAmount']
                 ]}
               />
             )}

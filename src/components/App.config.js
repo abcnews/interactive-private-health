@@ -237,7 +237,7 @@ const COVERAGE_PROPORTION = {
 
 const PROCEDURES = (module.exports.PROCEDURES = [
   // name, description, admissions, wait, totalCost, pctNoOOPs, oop
-  ['ACL repair', 'Knee ligament repair', 4050, 78, 8400, 0.2, 420],
+  ['ACL repair', 'Knee ligament repair', 0, 0, 8400, 0.2, 420],
   ['Acromioplasty/arthroscopy shoulder/sub acromial decompression', 'Repair shoulder joint', 1726, 85, 0, 0, 0],
   ['Angiogram', 'X-ray of arteries', 0, 0, 5300, 0.06, 60],
   ['Arthroscopy', 'Exploratory/repair procedure of joint', 13529, 68, 3800, 0.37, 400],
@@ -249,7 +249,7 @@ const PROCEDURES = (module.exports.PROCEDURES = [
   ['Cytoscopy', 'Exploratory procedure of bladder', 0, 0, 1500, 57, 710],
   ['Gall bladder surgery', '', 18611, 41, 7000, 0.18, 340],
   ['Gastroscopy', 'Exploratory procedure of digestive tract', 0, 0, 1300, 0.7, 110],
-  ['Grommets', 'Tube to drain ear', 1867, 170, 2300, 0.39, 310],
+  ['Grommets', 'Tube to drain ear', 6742, 56, 2300, 0.39, 310],
   ['Inguinal herniotomy/herniorrhaphy', '', 16809, 52, 0, 0, 0],
   ['Inguinal/femoral hernia', 'Repair weakness in abdominal wall', 16809, 52, 5000, 0.47, 330],
   ['Hip replacement', '', 11151, 110, 25900, 0.16, 550],
@@ -263,17 +263,18 @@ const PROCEDURES = (module.exports.PROCEDURES = [
   ['Sleeve gastrectomy', 'Surgery to reduce stomach size', 0, 0, 12200, 0.18, 500],
   ['Tonsils and adenoids', '', 19466, 97, 3500, 0.27, 420],
   ['Tooth extraction', '', 0, 0, 1600, 0.51, 260],
-  ['Vasectomy', '', 0, 0, 1900, 0.42, 210]
+  ['Vasectomy', '', 0, 0, 1900, 0.42, 210],
+  ['ACL reconstruction', 'Knee ligament reconstruction', 4050, 78, 0, 0, 0]
 ]);
 
 const WAITING_TIMES_PROCEDURES = [
   [[24, 12], [24, 12]],
   [[24, 12], [24, 12]],
   [[24, 12], [24, 12]],
-  [[0, 24], [0, 24]],
-  [[0, 24], [0, 24]],
-  [[0, 19], [0, 14, 3]],
-  [[0, 19], [0, 14, 3]],
+  [[27, 24], [27, 24]],
+  [[27, 24], [27, 24]],
+  [[27, 19], [27, 14, 3]],
+  [[27, 19], [27, 14, 3]],
   [[16, 19], [3, 13]],
   [[16, 17], [3, 13]],
   [[10, 16], [3, 1]],
@@ -303,7 +304,7 @@ const TOP_N_COVERED_PROCEDURES = [
   [[10, 2, 16, 8, 22], [2, 14, 8, 22, 11]],
   [[10, 2, 16, 8, 22], [2, 14, 8, 22, 11]],
   [[18, 2, 8, 22, 11], [21, 5, 8, 9, 11]],
-  [[18, 2, 5, 8, 22], [18, 21, 2, 5, 8]],
+  [[18, 2, 8, 22, 11], [21, 5, 8, 9, 11]],
   [[18, 2, 5, 8, 22], [18, 21, 2, 5, 8]],
   [[18, 2, 5, 8, 22], [18, 21, 2, 5, 8]],
   [[15, 2, 5, 8, 11], [15, 4, 21, 5, 8]],
