@@ -1,7 +1,8 @@
 .root {
   color: black;
   color: var(--color-primary, black);
-  font-weight: bold;
+  font-family: var(--font-sans);
+  font-weight: normal;
 }
 
 br + .root {
