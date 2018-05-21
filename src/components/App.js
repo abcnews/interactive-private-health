@@ -21,6 +21,24 @@ const {
 } = require('./App.config');
 const styles = require('./App.css');
 
+// console.table(
+//   [
+//     { input: { age: '64', ageOnJul1: '64', isInsured: 'yes' }, expected: { loadingAge: 33 } },
+//     { input: { age: '33', ageOnJul1: '33', isInsured: 'no' }, expected: { loadingAge: 33 } },
+//     { input: { age: '33', ageOnJul1: '33', isInsured: 'no' }, expected: { loadingAge: 33 } }
+//   ].map(x => {
+//     const output = getComputedState(x.input);
+
+//     return {
+//       age: +x.input.age,
+//       ageOnJul1: +x.input.ageOnJul1,
+//       loadingAge: output.loadingAge,
+//       expectedLoadingAge: x.expected.loadingAge,
+//       isExpectedLoadingAge: x.expected.loadingAge === output.loadingAge
+//     };
+//   })
+// );
+
 class App extends Component {
   constructor(props) {
     super(props);
