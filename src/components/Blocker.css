@@ -1,14 +1,17 @@
 .root {
   margin: 32rem auto 8rem;
   max-width: 14rem;
-  font-size: 5rem;
+  padding-top: 2.25rem;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 13 18'%3e%3cpath fill-rule='evenodd' d='M0 6.392l1.089 1.09L5.62 2.951l.002 15.031L7.175 18 7.173 2.899 11.7 7.426l1.059-1.059L6.392 0z'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: 0.8125rem 1.125rem;
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  line-height: 1.75;
   text-align: center;
-}
-
-.root > div {
-  font-size: 5rem;
-  -webkit-filter: grayscale(1);
-  filter: grayscale(1);
+  text-transform: uppercase;
+  letter-spacing: 0.125rem;
 }
 
 .root ~ * {
