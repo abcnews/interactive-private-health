@@ -2,11 +2,13 @@ const YEAR_MS = 365 * 24 * 60 * 60 * 1000;
 const TODAY = (now => (now.setHours(0, 0, 0, 0), now))(new Date());
 const THIS_YEAR = TODAY.getFullYear();
 const JUL_1_THIS_YEAR = new Date(THIS_YEAR, 6, 1);
+const JUL_1_LAST_YEAR = new Date(THIS_YEAR - 1, 6, 1);
+const HAS_JUL_1_PASSED_THIS_YEAR = (module.exports.HAS_JUL_1_PASSED_THIS_YEAR = JUL_1_THIS_YEAR <= TODAY);
+const JUL_1_MOST_RECENT = HAS_JUL_1_PASSED_THIS_YEAR ? JUL_1_THIS_YEAR : JUL_1_LAST_YEAR;
 const JUL_1_2000 = new Date(2000, 6, 1);
 const JUL_1_1934 = new Date(1934, 6, 1);
-const JUL_1_DIFF = (module.exports.JUL_1_DIFF = TODAY - JUL_1_THIS_YEAR);
-const YEARS_SINCE_2000 = Math.floor((TODAY - JUL_1_2000) / YEAR_MS);
-const YEARS_SINCE_1934 = Math.floor((TODAY - JUL_1_1934) / YEAR_MS);
+const YEARS_SINCE_2000 = Math.floor((JUL_1_MOST_RECENT - JUL_1_2000) / YEAR_MS);
+const YEARS_SINCE_1934 = Math.floor((JUL_1_MOST_RECENT - JUL_1_1934) / YEAR_MS);
 
 const FIELDS = (module.exports.FIELDS = {
   relationship: { choices: ['single', 'couple'] },
@@ -26,7 +28,7 @@ const FIELDS = (module.exports.FIELDS = {
   age: {
     type: 'number',
     placeholder: `Enter your age`,
-    resets: ['ageOnJul1'],
+    resets: ['ageOnMostRecentJul1'],
     attributes: {
       min: 18
     }
@@ -38,13 +40,8 @@ const FIELDS = (module.exports.FIELDS = {
       min: 18
     }
   },
-  ageOnJul1: {
-    choices: state =>
-      state.age == null
-        ? []
-        : JUL_1_DIFF < 0
-          ? [state.age, String(+state.age + 1)]
-          : [String(+state.age - 1), state.age]
+  ageOnMostRecentJul1: {
+    choices: state => (state.age == null ? [] : [String(+state.age - 1), state.age])
   },
   isInsured: {
     choices: ['yes', 'no'],
@@ -79,7 +76,7 @@ module.exports.DEV_STATE = {
   children: '0',
   age: '64',
   partnerAge: null,
-  ageOnJul1: '64',
+  ageOnMostRecentJul1: '64',
   isInsured: 'no',
   ageWhenInsuranceTaken: null,
   location: 'Queensland',
@@ -422,7 +419,7 @@ module.exports.getComputedState = ({
   children,
   age: _age,
   partnerAge,
-  ageOnJul1,
+  ageOnMostRecentJul1,
   isInsured,
   whenInsured,
   location,
@@ -466,17 +463,16 @@ module.exports.getComputedState = ({
   const reducedCoverBasic = rebate != null ? (coverBasic * (1 - rebate)).toFixed(0) : null;
   const reducedCoverMedium = rebate != null ? (coverMedium * (1 - rebate)).toFixed(0) : null;
   const reducedCoverTop = rebate != null ? (coverTop * (1 - rebate)).toFixed(0) : null;
-  const loadingAge = JUL_1_DIFF > 0 ? (ageOnJul1 == null ? null : +ageOnJul1) : age;
-  const wasBornBeforeJuly1934 = ageOnJul1 == null ? null : +ageOnJul1 + (JUL_1_DIFF > 0 ? 1 : 0) > YEARS_SINCE_1934;
-  const willAccrueLoading = !wasBornBeforeJuly1934 && loadingAge != null && loadingAge >= 31;
-  const loadingAccrualYears = Math.max(0, loadingAge - (JUL_1_DIFF < 0 ? 31 : 30));
+  const wasBornBeforeJuly1934 = ageOnMostRecentJul1 == null ? null : +ageOnMostRecentJul1 > YEARS_SINCE_1934;
+  const willAccrueLoading = !wasBornBeforeJuly1934 && ageOnMostRecentJul1 != null && +ageOnMostRecentJul1 >= 30;
+  const loadingAccrualYears = Math.max(0, +ageOnMostRecentJul1 - 30);
   const yearsInsured =
     isInsured == null || whenInsured == null
       ? 0
       : FIELDS.whenInsured.choices.length - 1 - FIELDS.whenInsured.choices.indexOf(whenInsured);
   const wasInsuredBeforeJul2000 = yearsInsured > YEARS_SINCE_2000;
   const loadingYears =
-    loadingAge == null || isInsured == null || (isInsured == 'yes' && whenInsured == null)
+    ageOnMostRecentJul1 == null || isInsured == null || (isInsured == 'yes' && whenInsured == null)
       ? null
       : wasInsuredBeforeJul2000
         ? 0
@@ -484,7 +480,7 @@ module.exports.getComputedState = ({
   const loading = loadingYears == null ? null : Math.min(0.7, loadingYears * 0.02);
   const loadingCode = wasBornBeforeJuly1934
     ? 'before1934'
-    : loadingAge != null && loadingAge < 31
+    : ageOnMostRecentJul1 != null && +ageOnMostRecentJul1 < 31
       ? 'under31'
       : loadingYears == null
         ? null
@@ -531,7 +527,6 @@ module.exports.getComputedState = ({
     reducedCoverBasic,
     reducedCoverMedium,
     reducedCoverTop,
-    loadingAge,
     wasBornBeforeJuly1934,
     willAccrueLoading,
     loadingAccrualYears,

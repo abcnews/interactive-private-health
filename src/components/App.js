@@ -15,7 +15,7 @@ const {
   FIELDS,
   FIRST_YEAR_LOADING,
   FORMATS,
-  JUL_1_DIFF,
+  HAS_JUL_1_PASSED_THIS_YEAR,
   LINKS,
   LOW_INCOME_THRESHOLD,
   ORDINAL,
@@ -27,18 +27,23 @@ const styles = require('./App.css');
 
 // console.table(
 //   [
-//     { input: { age: '64', ageOnJul1: '64', isInsured: 'yes' }, expected: { loadingAge: 33 } },
-//     { input: { age: '33', ageOnJul1: '33', isInsured: 'no' }, expected: { loadingAge: 33 } },
-//     { input: { age: '33', ageOnJul1: '33', isInsured: 'no' }, expected: { loadingAge: 33 } }
+//     { input: { age: '64', ageOnMostRecentJul1: '64', isInsured: 'no' }, expected: { loadingYears: 34, loading: 0.68 } },
+//     { input: { age: '64', ageOnMostRecentJul1: '63', isInsured: 'no' }, expected: { loadingYears: 33, loading: 0.66 } },
+//     { input: { age: '33', ageOnMostRecentJul1: '33', isInsured: 'no' }, expected: { loadingYears: 3, loading: 0.06 } },
+//     { input: { age: '33', ageOnMostRecentJul1: '32', isInsured: 'no' }, expected: { loadingYears: 2, loading: 0.04 } },
+//     { input: { age: '32', ageOnMostRecentJul1: '31', isInsured: 'no' }, expected: { loadingYears: 1, loading: 0.02 } }
 //   ].map(x => {
 //     const output = getComputedState(x.input);
 
 //     return {
 //       age: +x.input.age,
-//       ageOnJul1: +x.input.ageOnJul1,
-//       loadingAge: output.loadingAge,
-//       expectedLoadingAge: x.expected.loadingAge,
-//       isExpectedLoadingAge: x.expected.loadingAge === output.loadingAge
+//       ageOnMostRecentJul1: +x.input.ageOnMostRecentJul1,
+//       loadingYears: output.loadingYears,
+//       loadingYearsE: x.expected.loadingYears,
+//       loadingYearsIsEqual: output.loadingYears === x.expected.loadingYears,
+//       loading: output.loading,
+//       loadingE: x.expected.loading,
+//       loadingIsEqual: output.loading === x.expected.loading
 //     };
 //   })
 // );
@@ -262,22 +267,22 @@ class App extends Component {
         {this.has(['rebate']) && this.renderContent('postrebate')}
 
         {this.renderContent('preloading')}
-        <Section key="ageOnJul1Field">
+        <Section key="ageOnMostRecentJul1Field">
           <h4>
-            {`What age ${JUL_1_DIFF < 0 ? 'will you be' : 'were you'} on July 1`}
+            {'What age were you on July 1'}
             <sup>st</sup>
-            {'?'}
+            {` ${HAS_JUL_1_PASSED_THIS_YEAR ? 'this' : 'last'} year?`}
           </h4>
-          {this.renderField('ageOnJul1')}
+          {this.renderField('ageOnMostRecentJul1')}
         </Section>
-        {this.has(['ageOnJul1']) &&
+        {this.has(['ageOnMostRecentJul1']) &&
           this.computedState.willAccrueLoading && (
             <Section key="isInsuredField">
               <h4>Do you have private health insurance?</h4>
               {this.renderField('isInsured')}
             </Section>
           )}
-        {this.has(['ageOnJul1']) &&
+        {this.has(['ageOnMostRecentJul1']) &&
           this.computedState.willAccrueLoading &&
           this.state.isInsured === 'yes' && (
             <Section key="whenInsuredField">
@@ -285,7 +290,7 @@ class App extends Component {
               {this.renderField('whenInsured')}
             </Section>
           )}
-        {this.has(['ageOnJul1', 'loading']) && (
+        {this.has(['ageOnMostRecentJul1', 'loading']) && (
           <Section key="loadingResults">
             <h3>
               {`Your Lifetime Health Cover loading is:`}
@@ -300,7 +305,7 @@ class App extends Component {
             )}
           </Section>
         )}
-        {this.has(['ageOnJul1', 'loading']) &&
+        {this.has(['ageOnMostRecentJul1', 'loading']) &&
           this.computedState.loadingCode === 'continuous' && (
             <Section key="loadingCodeResults">
               <p>
@@ -315,7 +320,7 @@ class App extends Component {
               </p>
             </Section>
           )}
-        {this.has(['ageOnJul1', 'loading']) &&
+        {this.has(['ageOnMostRecentJul1', 'loading']) &&
           this.computedState.loadingCode === 'without' && (
             <Section key="loadingCodeResults">
               <p>
