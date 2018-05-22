@@ -315,10 +315,33 @@ const TOP_N_COVERED_PROCEDURES = [
   [[15, 2, 5, 8, 11], [15, 4, 21, 5, 8]]
 ]; // x=age; y=sex; z=procedures
 
+const AGE_GROUP_BENEFITS = [
+  373,
+  118,
+  131,
+  360,
+  494,
+  650,
+  749,
+  712,
+  664,
+  757,
+  980,
+  1283,
+  1814,
+  2573,
+  3518,
+  4613,
+  5461,
+  6108,
+  5925,
+  5377
+];
+
 const getWaitingProcedures = (age, sex) =>
   age == null || sex == null
     ? null
-    : WAITING_TIMES_PROCEDURES[Math.min(WAITING_TIMES_PROCEDURES.length - 1, Math.round(age / 5))][
+    : WAITING_TIMES_PROCEDURES[Math.min(WAITING_TIMES_PROCEDURES.length - 1, Math.floor(age / 5))][
         sex == 'female' ? 0 : 1
       ].map(procedure => ({
         name: PROCEDURES[procedure][0],
@@ -330,7 +353,7 @@ const getWaitingProcedures = (age, sex) =>
 const getTopNProcedures = (age, sex) =>
   age == null || sex == null
     ? null
-    : TOP_N_COVERED_PROCEDURES[Math.min(TOP_N_COVERED_PROCEDURES.length - 1, Math.round(age / 5))][
+    : TOP_N_COVERED_PROCEDURES[Math.min(TOP_N_COVERED_PROCEDURES.length - 1, Math.floor(age / 5))][
         sex == 'female' ? 0 : 1
       ].map(procedure => ({
         name: PROCEDURES[procedure][0],
@@ -361,6 +384,8 @@ const getKidsProcedures = getFn =>
 
 const WAITING_KIDS = getKidsProcedures(getWaitingProcedures);
 const TOP_N_KIDS = getKidsProcedures(getTopNProcedures);
+
+const getBenefits = age => AGE_GROUP_BENEFITS[Math.min(AGE_GROUP_BENEFITS.length - 1, Math.floor(age / 5))];
 
 module.exports.REASONS_FOR_HAVING = {
   'Security, protection, peace of mind': 0.679,
@@ -485,10 +510,11 @@ module.exports.getComputedState = ({
     age == null || sex == null
       ? null
       : COVERAGE_PROPORTION[sex][Math.min(COVERAGE_PROPORTION[sex].length - 1, Math.floor(age / 5))];
-  const waiting = getWaitingProcedures(age, sex);
+  const waiting = age == null || sex == null ? null : getWaitingProcedures(age, sex);
   const waitingKids = +children ? WAITING_KIDS : null;
-  const topN = getTopNProcedures(age, sex);
+  const topN = age == null || sex == null ? null : getTopNProcedures(age, sex);
   const topNKids = +children ? TOP_N_KIDS : null;
+  const benefits = age == null ? null : getBenefits(age);
 
   return {
     household,
@@ -521,6 +547,7 @@ module.exports.getComputedState = ({
     waiting,
     waitingKids,
     topN,
-    topNKids
+    topNKids,
+    benefits
   };
 };

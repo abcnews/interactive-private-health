@@ -420,6 +420,13 @@ class App extends Component {
                 ]}
               />
             )}
+            {this.has(['benefits']) && (
+              <p>
+                {`People of your age with private hospital insurance are paid on average $${
+                  this.computedState.benefits
+                } in benefits each year.`}
+              </p>
+            )}
           </Section>
         ) : (
           <Blocker />
