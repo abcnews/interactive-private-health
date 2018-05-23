@@ -344,7 +344,7 @@ class App extends Component {
             {this.computedState.loadingCode !== 'before1934' && (
               <p>
                 {`Let’s look at how much money you've saved and how much extra you'll spend, based on ${
-                  this.computedState.yearsInsured == 0 ? 'your decision to not' : 'when you decided to'
+                  this.computedState.isInsured === 'no' ? 'your decision to not' : 'when you decided to'
                 } take out hospital cover. We’re
                 assuming for this calculation that you are single.`}
               </p>
