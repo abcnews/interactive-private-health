@@ -335,9 +335,7 @@ class App extends Component {
         {this.has(['ageLastJun30', 'loading']) && (
           <Section key="loadingResults">
             <h3>
-              {`Your Lifetime Health Cover loading ${
-                this.computedState.yearsInsured > 0 ? ` (fixed ${this.computedState.yearsInsured} years ago)` : ''
-              } is:`}
+              {`Your Lifetime Health Cover loading is:`}
               <br />
               {this.renderResult('loading', 'percentage')}
             </h3>
