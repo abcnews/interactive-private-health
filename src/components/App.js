@@ -25,28 +25,64 @@ const {
 } = require('./App.config');
 const styles = require('./App.css');
 
-// console.table(
-//   [
-//     { input: { age: '64', ageOnMostRecentJul1: '64', isInsured: 'no' }, expected: { loadingYears: 34, loading: 0.68 } },
-//     { input: { age: '64', ageOnMostRecentJul1: '63', isInsured: 'no' }, expected: { loadingYears: 33, loading: 0.66 } },
-//     { input: { age: '33', ageOnMostRecentJul1: '33', isInsured: 'no' }, expected: { loadingYears: 3, loading: 0.06 } },
-//     { input: { age: '33', ageOnMostRecentJul1: '32', isInsured: 'no' }, expected: { loadingYears: 2, loading: 0.04 } },
-//     { input: { age: '32', ageOnMostRecentJul1: '31', isInsured: 'no' }, expected: { loadingYears: 1, loading: 0.02 } }
-//   ].map(x => {
-//     const output = getComputedState(x.input);
+console.clear();
+const tests = [
+  {
+    input: { age: '84', ageOnMostRecentJul1: '84', isInsured: 'no' },
+    expected: { willAccrueLoading: false, loadingYears: 0, loading: 0 }
+  },
+  {
+    input: { age: '84', ageOnMostRecentJul1: '83', isInsured: 'no' },
+    expected: { willAccrueLoading: true, loadingYears: 53, loading: 0.7 }
+  },
+  {
+    input: { age: '64', ageOnMostRecentJul1: '64', isInsured: 'no' },
+    expected: { willAccrueLoading: true, loadingYears: 34, loading: 0.68 }
+  },
+  {
+    input: { age: '64', ageOnMostRecentJul1: '63', isInsured: 'no' },
+    expected: { willAccrueLoading: true, loadingYears: 33, loading: 0.66 }
+  },
+  {
+    input: { age: '33', ageOnMostRecentJul1: '33', isInsured: 'no' },
+    expected: { willAccrueLoading: true, loadingYears: 3, loading: 0.06 }
+  },
+  {
+    input: { age: '33', ageOnMostRecentJul1: '32', isInsured: 'no' },
+    expected: { willAccrueLoading: true, loadingYears: 2, loading: 0.04 }
+  },
+  {
+    input: { age: '32', ageOnMostRecentJul1: '31', isInsured: 'no' },
+    expected: { willAccrueLoading: true, loadingYears: 1, loading: 0.02 }
+  },
+  {
+    input: { age: '31', ageOnMostRecentJul1: '31', isInsured: 'no' },
+    expected: { willAccrueLoading: true, loadingYears: 0, loading: 0 }
+  }
+]
+  .map(x => {
+    const output = getComputedState(x.input);
 
-//     return {
-//       age: +x.input.age,
-//       ageOnMostRecentJul1: +x.input.ageOnMostRecentJul1,
-//       loadingYears: output.loadingYears,
-//       loadingYearsE: x.expected.loadingYears,
-//       loadingYearsIsEqual: output.loadingYears === x.expected.loadingYears,
-//       loading: output.loading,
-//       loadingE: x.expected.loading,
-//       loadingIsEqual: output.loading === x.expected.loading
-//     };
-//   })
-// );
+    return Object.keys(x.expected).reduce(
+      (memo, key) => {
+        if (x.expected[key] !== output[key]) {
+          memo.failed = true;
+          memo[`${key}E`] = x.expected[key];
+          memo[key] = output[key];
+        }
+
+        return memo;
+      },
+      { ...x.input }
+    );
+  })
+  .filter(x => x.failed);
+
+if (tests.length) {
+  console.table(tests);
+} else {
+  console.debug('👌 All tests passed');
+}
 
 class App extends Component {
   constructor(props) {
