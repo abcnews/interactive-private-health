@@ -336,8 +336,8 @@ class App extends Component {
           <Section key="loadingResults">
             <h3>
               {`Your Lifetime Health Cover loading ${
-                this.computedState.yearsInsured > 0 ? ` (fixed ${this.computedState.yearsInsured} years ago) was` : 'is'
-              }:`}
+                this.computedState.yearsInsured > 0 ? ` (fixed ${this.computedState.yearsInsured} years ago)` : ''
+              } is:`}
               <br />
               {this.renderResult('loading', 'percentage')}
             </h3>
