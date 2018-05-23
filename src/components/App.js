@@ -15,7 +15,7 @@ const {
   FIELDS,
   FIRST_YEAR_LOADING,
   FORMATS,
-  HAS_JUL_1_PASSED_THIS_YEAR,
+  HAS_JUL_1_ARRIVED_THIS_YEAR,
   LINKS,
   LOW_INCOME_THRESHOLD,
   ORDINAL,
@@ -28,35 +28,39 @@ const styles = require('./App.css');
 console.clear();
 const tests = [
   {
-    input: { age: '84', ageOnMostRecentJul1: '84', isInsured: 'no' },
+    input: { age: '84', ageLastJun30: '84', isInsured: 'no' },
     expected: { willAccrueLoading: false, loadingYears: 0, loading: 0 }
   },
   {
-    input: { age: '84', ageOnMostRecentJul1: '83', isInsured: 'no' },
+    input: { age: '84', ageLastJun30: '83', isInsured: 'no' },
     expected: { willAccrueLoading: true, loadingYears: 53, loading: 0.7 }
   },
   {
-    input: { age: '64', ageOnMostRecentJul1: '64', isInsured: 'no' },
+    input: { age: '64', ageLastJun30: '64', isInsured: 'no' },
     expected: { willAccrueLoading: true, loadingYears: 34, loading: 0.68 }
   },
   {
-    input: { age: '64', ageOnMostRecentJul1: '63', isInsured: 'no' },
+    input: { age: '64', ageLastJun30: '63', isInsured: 'no' },
     expected: { willAccrueLoading: true, loadingYears: 33, loading: 0.66 }
   },
   {
-    input: { age: '33', ageOnMostRecentJul1: '33', isInsured: 'no' },
+    input: { age: '33', ageLastJun30: '33', isInsured: 'no' },
     expected: { willAccrueLoading: true, loadingYears: 3, loading: 0.06 }
   },
   {
-    input: { age: '33', ageOnMostRecentJul1: '32', isInsured: 'no' },
+    input: { age: '33', ageLastJun30: '32', isInsured: 'no' },
     expected: { willAccrueLoading: true, loadingYears: 2, loading: 0.04 }
   },
   {
-    input: { age: '32', ageOnMostRecentJul1: '31', isInsured: 'no' },
+    input: { age: '32', ageLastJun30: '31', isInsured: 'no' },
     expected: { willAccrueLoading: true, loadingYears: 1, loading: 0.02 }
   },
   {
-    input: { age: '31', ageOnMostRecentJul1: '31', isInsured: 'no' },
+    input: { age: '31', ageLastJun30: '31', isInsured: 'no' },
+    expected: { willAccrueLoading: true, loadingYears: 1, loading: 0.02 }
+  },
+  {
+    input: { age: '31', ageLastJun30: '30', isInsured: 'no' },
     expected: { willAccrueLoading: true, loadingYears: 0, loading: 0 }
   }
 ]
@@ -303,22 +307,22 @@ class App extends Component {
         {this.has(['rebate']) && this.renderContent('postrebate')}
 
         {this.renderContent('preloading')}
-        <Section key="ageOnMostRecentJul1Field">
+        <Section key="ageLastJun30Field">
           <h4>
-            {'What age were you on July 1'}
-            <sup>st</sup>
-            {` ${HAS_JUL_1_PASSED_THIS_YEAR ? 'this' : 'last'} year?`}
+            {'What age were you on June 30'}
+            <sup>th</sup>
+            {` ${HAS_JUL_1_ARRIVED_THIS_YEAR ? 'this' : 'last'} year?`}
           </h4>
-          {this.renderField('ageOnMostRecentJul1')}
+          {this.renderField('ageLastJun30')}
         </Section>
-        {this.has(['ageOnMostRecentJul1']) &&
+        {this.has(['ageLastJun30']) &&
           this.computedState.willAccrueLoading && (
             <Section key="isInsuredField">
               <h4>Do you have private health insurance?</h4>
               {this.renderField('isInsured')}
             </Section>
           )}
-        {this.has(['ageOnMostRecentJul1']) &&
+        {this.has(['ageLastJun30']) &&
           this.computedState.willAccrueLoading &&
           this.state.isInsured === 'yes' && (
             <Section key="whenInsuredField">
@@ -326,7 +330,7 @@ class App extends Component {
               {this.renderField('whenInsured')}
             </Section>
           )}
-        {this.has(['ageOnMostRecentJul1', 'loading']) && (
+        {this.has(['ageLastJun30', 'loading']) && (
           <Section key="loadingResults">
             <h3>
               {`Your Lifetime Health Cover loading is:`}
@@ -341,7 +345,7 @@ class App extends Component {
             )}
           </Section>
         )}
-        {this.has(['ageOnMostRecentJul1', 'loading']) &&
+        {this.has(['ageLastJun30', 'loading']) &&
           this.computedState.loadingCode === 'continuous' && (
             <Section key="loadingCodeResults">
               <p>
@@ -356,7 +360,7 @@ class App extends Component {
               </p>
             </Section>
           )}
-        {this.has(['ageOnMostRecentJul1', 'loading']) &&
+        {this.has(['ageLastJun30', 'loading']) &&
           this.computedState.loadingCode === 'without' && (
             <Section key="loadingCodeResults">
               <p>
