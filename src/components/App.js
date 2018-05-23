@@ -25,6 +25,7 @@ const {
 } = require('./App.config');
 const styles = require('./App.css');
 
+/*
 console.clear();
 const tests = [
   {
@@ -87,6 +88,7 @@ if (tests.length) {
 } else {
   console.debug('👌 All tests passed');
 }
+*/
 
 class App extends Component {
   constructor(props) {
@@ -333,14 +335,18 @@ class App extends Component {
         {this.has(['ageLastJun30', 'loading']) && (
           <Section key="loadingResults">
             <h3>
-              {`Your Lifetime Health Cover loading is:`}
+              {`Your Lifetime Health Cover loading ${
+                this.computedState.yearsInsured > 0 ? ` (fixed ${this.computedState.yearsInsured} years ago) was` : 'is'
+              }:`}
               <br />
               {this.renderResult('loading', 'percentage')}
             </h3>
             {this.computedState.loadingCode !== 'before1934' && (
               <p>
-                Let’s look at how much money you spent or saved depending on whether you had hospital cover. We’re
-                assuming for this calculation that you are single.
+                {`Let’s look at how much money you've saved and how much extra you'll spend, based on ${
+                  this.computedState.yearsInsured == 0 ? 'your decision to not' : 'when you decided to'
+                } take out hospital cover. We’re
+                assuming for this calculation that you are single.`}
               </p>
             )}
           </Section>
@@ -350,7 +356,9 @@ class App extends Component {
             <Section key="loadingCodeResults">
               <p>
                 {`According to your answers, you have had continuous cover since ${
-                  this.computedState.wasInsuredBeforeJul2000 ? 'July 1st 2000' : 'you turned 31'
+                  this.computedState.wasInsuredBeforeJul2000
+                    ? 'July 1st 2000'
+                    : 'the July 1st following your 31st birthday'
                 }, so you don’t
               have to pay a Lifetime Health Cover loading. ${
                 this.computedState.totalCoverPaid ? 'But in' : 'In'
@@ -370,7 +378,7 @@ class App extends Component {
                 }`}</Result>
                 {` with no cover, so that means you will pay `}
                 {this.renderResult('totalExtraToPay')}
-                {` more for singles medium cover over the next 10 years than someone who took out hospital cover to avoid the loading.
+                {` more for singles medium cover over 10 years than someone who took out hospital cover to avoid the loading.
               But by not having cover, you have saved `}
                 {this.renderResult('totalCoverPaid')}
                 {` in premiums on average compared with someone the same age as

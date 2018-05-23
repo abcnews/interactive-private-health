@@ -28,7 +28,7 @@ const FIELDS = (module.exports.FIELDS = {
   age: {
     type: 'number',
     placeholder: `Enter your age`,
-    resets: ['ageLastJun30'],
+    resets: ['ageLastJun30', 'whenInsured'],
     attributes: {
       min: 18
     }
@@ -41,7 +41,8 @@ const FIELDS = (module.exports.FIELDS = {
     }
   },
   ageLastJun30: {
-    choices: state => (state.age == null ? [] : [String(+state.age - 1), state.age])
+    choices: state => (state.age == null ? [] : [String(+state.age - 1), state.age]),
+    resets: ['whenInsured']
   },
   isInsured: {
     choices: ['yes', 'no'],
@@ -74,11 +75,11 @@ module.exports.DEV_STATE = {
   relationship: 'single',
   income: '99000',
   children: '0',
-  age: '64',
+  age: '50',
   partnerAge: null,
-  ageLastJun30: '64',
-  isInsured: 'no',
-  ageWhenInsuranceTaken: null,
+  ageLastJun30: '50',
+  isInsured: 'yes',
+  whenInsured: '5 years ago',
   location: 'Queensland',
   sex: 'male',
   isWorthIt: null
@@ -467,7 +468,7 @@ module.exports.getComputedState = ({
   const willAccrueLoading = !wasBornBeforeJuly1934 && ageLastJun30 != null && +ageLastJun30 >= 30;
   const loadingAccrualYears = willAccrueLoading ? Math.max(0, +ageLastJun30 - 30) : 0;
   const yearsInsured =
-    isInsured == null || whenInsured == null
+    isInsured == null || whenInsured == null || !willAccrueLoading
       ? 0
       : FIELDS.whenInsured.choices.length - 1 - FIELDS.whenInsured.choices.indexOf(whenInsured);
   const wasInsuredBeforeJul2000 = yearsInsured > YEARS_SINCE_2000;
@@ -495,12 +496,24 @@ module.exports.getComputedState = ({
     let total = 0;
 
     for (; thisYearOffset > 0; thisYearOffset--) {
-      total += MEDIUM_SINGLE_PREMIUMS_2000_TO_TEN_YEARS_FROM_NOW[THIS_YEAR - thisYearOffset + 1] || 0;
+      total += MEDIUM_SINGLE_PREMIUMS_2000_TO_TEN_YEARS_FROM_NOW[THIS_YEAR - thisYearOffset - yearsInsured + 1] || 0;
     }
 
     return Math.round(total);
   })(loadingYears);
-  const totalExtraToPay = loading == null ? null : Math.round(MEDIUM_SINGLE_PREMIUMS_NEXT_10_YEARS_TOTAL * loading);
+  const totalExtraToPay =
+    loading == null
+      ? null
+      : (() => {
+          let total = 0;
+
+          for (let penaltyOffset = 10; penaltyOffset > 0; penaltyOffset--) {
+            total +=
+              MEDIUM_SINGLE_PREMIUMS_2000_TO_TEN_YEARS_FROM_NOW[THIS_YEAR - penaltyOffset - yearsInsured + 1] || 0;
+          }
+
+          return Math.round(total * loading);
+        })();
   const locationCode = location ? LOCATION_CODES[location] : null;
   const coverage =
     age == null || sex == null

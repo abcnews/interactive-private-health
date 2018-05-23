@@ -34,6 +34,9 @@
 }
 
 .root h3 {
+  margin-right: auto;
+  margin-left: auto;
+  max-width: 28rem;
   font-size: 1.5rem;
 }
 
