@@ -3,8 +3,8 @@ const TODAY = (now => (now.setHours(0, 0, 0, 0), now))(new Date());
 const THIS_YEAR = TODAY.getFullYear();
 const JUL_1_THIS_YEAR = new Date(THIS_YEAR, 6, 1);
 const JUL_1_LAST_YEAR = new Date(THIS_YEAR - 1, 6, 1);
-const HAS_JUL_1_ARRIVED_THIS_YEAR = (module.exports.HAS_JUL_1_ARRIVED_THIS_YEAR = JUL_1_THIS_YEAR <= TODAY);
-const JUL_1_MOST_RECENT = HAS_JUL_1_ARRIVED_THIS_YEAR ? JUL_1_THIS_YEAR : JUL_1_LAST_YEAR;
+const JUL_1_MOST_RECENT = (module.exports.JUL_1_MOST_RECENT =
+  JUL_1_THIS_YEAR <= TODAY ? JUL_1_THIS_YEAR : JUL_1_LAST_YEAR);
 const JUL_1_2000 = new Date(2000, 6, 1);
 const JUL_1_1934 = new Date(1934, 6, 1);
 const YEARS_SINCE_2000 = Math.floor((JUL_1_MOST_RECENT - JUL_1_2000) / YEAR_MS);
@@ -28,7 +28,7 @@ const FIELDS = (module.exports.FIELDS = {
   age: {
     type: 'number',
     placeholder: `Enter your age`,
-    resets: ['ageLastJun30', 'whenInsured'],
+    resets: ['ageLastJuly1', 'whenInsured'],
     attributes: {
       min: 18
     }
@@ -40,7 +40,7 @@ const FIELDS = (module.exports.FIELDS = {
       min: 18
     }
   },
-  ageLastJun30: {
+  ageLastJuly1: {
     choices: state => (state.age == null ? [] : [String(+state.age - 1), state.age]),
     resets: ['whenInsured']
   },
@@ -77,7 +77,7 @@ module.exports.DEV_STATE = {
   children: '0',
   age: '70',
   partnerAge: null,
-  ageLastJun30: '70',
+  ageLastJuly1: '70',
   isInsured: 'no',
   whenInsured: null,
   location: 'Queensland',
@@ -420,7 +420,7 @@ module.exports.getComputedState = ({
   children,
   age: _age,
   partnerAge,
-  ageLastJun30,
+  ageLastJuly1,
   isInsured,
   whenInsured,
   location,
@@ -464,16 +464,16 @@ module.exports.getComputedState = ({
   const reducedCoverBasic = rebate != null ? (coverBasic * (1 - rebate)).toFixed(0) : null;
   const reducedCoverMedium = rebate != null ? (coverMedium * (1 - rebate)).toFixed(0) : null;
   const reducedCoverTop = rebate != null ? (coverTop * (1 - rebate)).toFixed(0) : null;
-  const wasBornBeforeJuly1934 = ageLastJun30 == null ? null : +ageLastJun30 > YEARS_SINCE_1934;
-  const willAccrueLoading = !wasBornBeforeJuly1934 && ageLastJun30 != null && +ageLastJun30 >= 31;
-  const loadingYears = willAccrueLoading ? Math.max(0, +ageLastJun30 - 30) : 0;
+  const wasBornBeforeJuly1934 = ageLastJuly1 == null ? null : +ageLastJuly1 > YEARS_SINCE_1934;
+  const willAccrueLoading = !wasBornBeforeJuly1934 && ageLastJuly1 != null && +ageLastJuly1 >= 31;
+  const loadingYears = willAccrueLoading ? Math.max(0, +ageLastJuly1 - 30) : 0;
   const insuredYears =
     isInsured == null || whenInsured == null || !willAccrueLoading
       ? 0
       : FIELDS.whenInsured.choices.length - 1 - FIELDS.whenInsured.choices.indexOf(whenInsured);
   const wasInsuredBeforeJul2000 = insuredYears > YEARS_SINCE_2000;
   const effectiveLoadingYears =
-    ageLastJun30 == null || isInsured == null || (isInsured == 'yes' && whenInsured == null)
+    ageLastJuly1 == null || isInsured == null || (isInsured == 'yes' && whenInsured == null)
       ? null
       : wasInsuredBeforeJul2000
         ? 0
@@ -481,10 +481,10 @@ module.exports.getComputedState = ({
   const loading = effectiveLoadingYears == null ? null : Math.min(0.7, effectiveLoadingYears * 0.02);
   const loadingCode = wasBornBeforeJuly1934
     ? 'before1934'
-    : !willAccrueLoading
-      ? 'under31'
-      : effectiveLoadingYears == null
-        ? null
+    : effectiveLoadingYears == null
+      ? null
+      : !willAccrueLoading
+        ? 'under31'
         : effectiveLoadingYears == 0
           ? 'continuous'
           : 'without';
