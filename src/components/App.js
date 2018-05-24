@@ -25,68 +25,68 @@ const {
 } = require('./App.config');
 const styles = require('./App.css');
 
-console.clear();
-const tests = [
-  {
-    input: { age: '84', ageLastJun30: '84', isInsured: 'no' },
-    expected: { willAccrueLoading: false, effectiveLoadingYears: 0, loading: 0 }
-  },
-  {
-    input: { age: '84', ageLastJun30: '83', isInsured: 'no' },
-    expected: { willAccrueLoading: true, effectiveLoadingYears: 53, loading: 0.7 }
-  },
-  {
-    input: { age: '64', ageLastJun30: '64', isInsured: 'no' },
-    expected: { willAccrueLoading: true, effectiveLoadingYears: 34, loading: 0.68 }
-  },
-  {
-    input: { age: '64', ageLastJun30: '63', isInsured: 'no' },
-    expected: { willAccrueLoading: true, effectiveLoadingYears: 33, loading: 0.66 }
-  },
-  {
-    input: { age: '33', ageLastJun30: '33', isInsured: 'no' },
-    expected: { willAccrueLoading: true, effectiveLoadingYears: 3, loading: 0.06 }
-  },
-  {
-    input: { age: '33', ageLastJun30: '32', isInsured: 'no' },
-    expected: { willAccrueLoading: true, effectiveLoadingYears: 2, loading: 0.04 }
-  },
-  {
-    input: { age: '32', ageLastJun30: '31', isInsured: 'no' },
-    expected: { willAccrueLoading: true, effectiveLoadingYears: 1, loading: 0.02 }
-  },
-  {
-    input: { age: '31', ageLastJun30: '31', isInsured: 'no' },
-    expected: { willAccrueLoading: true, effectiveLoadingYears: 1, loading: 0.02 }
-  },
-  {
-    input: { age: '31', ageLastJun30: '30', isInsured: 'no' },
-    expected: { willAccrueLoading: false, effectiveLoadingYears: 0, loading: 0 }
-  }
-]
-  .map(x => {
-    const output = getComputedState(x.input);
+// console.clear();
+// const tests = [
+//   {
+//     input: { age: '84', ageLastJun30: '84', isInsured: 'no' },
+//     expected: { willAccrueLoading: false, effectiveLoadingYears: 0, loading: 0 }
+//   },
+//   {
+//     input: { age: '84', ageLastJun30: '83', isInsured: 'no' },
+//     expected: { willAccrueLoading: true, effectiveLoadingYears: 53, loading: 0.7 }
+//   },
+//   {
+//     input: { age: '64', ageLastJun30: '64', isInsured: 'no' },
+//     expected: { willAccrueLoading: true, effectiveLoadingYears: 34, loading: 0.68 }
+//   },
+//   {
+//     input: { age: '64', ageLastJun30: '63', isInsured: 'no' },
+//     expected: { willAccrueLoading: true, effectiveLoadingYears: 33, loading: 0.66 }
+//   },
+//   {
+//     input: { age: '33', ageLastJun30: '33', isInsured: 'no' },
+//     expected: { willAccrueLoading: true, effectiveLoadingYears: 3, loading: 0.06 }
+//   },
+//   {
+//     input: { age: '33', ageLastJun30: '32', isInsured: 'no' },
+//     expected: { willAccrueLoading: true, effectiveLoadingYears: 2, loading: 0.04 }
+//   },
+//   {
+//     input: { age: '32', ageLastJun30: '31', isInsured: 'no' },
+//     expected: { willAccrueLoading: true, effectiveLoadingYears: 1, loading: 0.02 }
+//   },
+//   {
+//     input: { age: '31', ageLastJun30: '31', isInsured: 'no' },
+//     expected: { willAccrueLoading: true, effectiveLoadingYears: 1, loading: 0.02 }
+//   },
+//   {
+//     input: { age: '31', ageLastJun30: '30', isInsured: 'no' },
+//     expected: { willAccrueLoading: false, effectiveLoadingYears: 0, loading: 0 }
+//   }
+// ]
+//   .map(x => {
+//     const output = getComputedState(x.input);
 
-    return Object.keys(x.expected).reduce(
-      (memo, key) => {
-        if (x.expected[key] !== output[key]) {
-          memo.failed = true;
-          memo[`${key}E`] = x.expected[key];
-          memo[key] = output[key];
-        }
+//     return Object.keys(x.expected).reduce(
+//       (memo, key) => {
+//         if (x.expected[key] !== output[key]) {
+//           memo.failed = true;
+//           memo[`${key}E`] = x.expected[key];
+//           memo[key] = output[key];
+//         }
 
-        return memo;
-      },
-      { ...x.input }
-    );
-  })
-  .filter(x => x.failed);
+//         return memo;
+//       },
+//       { ...x.input }
+//     );
+//   })
+//   .filter(x => x.failed);
 
-if (tests.length) {
-  console.table(tests);
-} else {
-  console.debug('👌 All tests passed');
-}
+// if (tests.length) {
+//   console.table(tests);
+// } else {
+//   console.debug('👌 All tests passed');
+// }
 
 class App extends Component {
   constructor(props) {
@@ -333,7 +333,7 @@ class App extends Component {
         {this.has(['ageLastJun30', 'loading']) && (
           <Section key="loadingResults">
             <h3>
-              {`Your Lifetime Health Cover loading is:`}
+              {`Your Lifetime Health Cover loading ${this.computedState.insuredYears >= 10 ? `wa` : 'i'}s:`}
               <br />
               {this.renderResult('loading', 'percentage')}
             </h3>
@@ -372,9 +372,11 @@ class App extends Component {
                 <Result>{`${this.computedState.effectiveLoadingYears} year${
                   this.computedState.effectiveLoadingYears === 1 ? '' : 's'
                 }`}</Result>
-                {` with no cover, so that means you will pay `}
+                {` with no cover, so that means you'${
+                  this.computedState.insuredYears >= 10 ? 've already paid' : 'll pay'
+                } `}
                 {this.renderResult('totalCoverLoadingCost')}
-                {` more for singles medium cover over 10 years than someone who took out hospital cover to avoid the loading.
+                {` more for singles medium cover over 10 years than someone who took out hospital cover early enough to avoid the loading.
               But by not having cover, you have saved `}
                 {this.renderResult('totalCoverCost')}
                 {` in premiums on average compared with someone the same age as
