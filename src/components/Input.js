@@ -5,7 +5,8 @@ class Input extends Component {
   constructor(props) {
     super(props);
 
-    this.onChange = this.onChange.bind(this);
+    this.getInputRef = this.getInputRef.bind(this);
+    this.onBlur = this.onBlur.bind(this);
     this.onInput = this.onInput.bind(this);
     this.onKeyDown = this.onKeyDown.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -13,7 +14,9 @@ class Input extends Component {
     this.state = { value: null };
   }
 
-  onChange({ target: { value = null } }) {
+  emitChange() {
+    const value = this._input.value;
+
     this.setState({ value: null });
 
     if (value === this.props.value) {
@@ -21,6 +24,17 @@ class Input extends Component {
     }
 
     this.props.onChange({ name: this.props.name, value: value ? value : null });
+  }
+
+  getInputRef(el) {
+    this._input = el;
+  }
+
+  onBlur(event) {
+    if (this.state.value !== null) {
+      this.emitChange();
+      this._input.focus();
+    }
   }
 
   onInput({ target: { value = null } }) {
@@ -31,7 +45,7 @@ class Input extends Component {
 
   onKeyDown(event) {
     if (event.keyCode === 13) {
-      return this.onChange(event);
+      return this.emitChange();
     }
 
     if (event.keyCode === 75 && event.target.type === 'number' && event.target.value.length < 4) {
@@ -51,11 +65,12 @@ class Input extends Component {
         data-name={name}
       >
         <input
+          ref={this.getInputRef}
           name={name}
           type={type || 'text'}
           value={this.state.value !== null ? this.state.value : value}
           placeholder={placeholder}
-          onBlur={this.onChange}
+          onBlur={this.onBlur}
           onInput={this.onInput}
           onKeyDown={this.onKeyDown}
           {...attributes}
