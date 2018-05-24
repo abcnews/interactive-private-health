@@ -494,10 +494,6 @@ module.exports.getComputedState = ({
         let total = 0;
 
         for (let i = 0; i < effectiveLoadingYears; i++) {
-          console.log(
-            THIS_YEAR - effectiveLoadingYears + i - insuredYears,
-            MEDIUM_SINGLE_PREMIUMS_2000_TO_TEN_YEARS_FROM_NOW[THIS_YEAR - effectiveLoadingYears + i - insuredYears]
-          );
           total +=
             MEDIUM_SINGLE_PREMIUMS_2000_TO_TEN_YEARS_FROM_NOW[THIS_YEAR - effectiveLoadingYears + i - insuredYears] ||
             0;
