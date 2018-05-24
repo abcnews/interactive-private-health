@@ -25,44 +25,43 @@ const {
 } = require('./App.config');
 const styles = require('./App.css');
 
-/*
 console.clear();
 const tests = [
   {
     input: { age: '84', ageLastJun30: '84', isInsured: 'no' },
-    expected: { willAccrueLoading: false, loadingYears: 0, loading: 0 }
+    expected: { willAccrueLoading: false, effectiveLoadingYears: 0, loading: 0 }
   },
   {
     input: { age: '84', ageLastJun30: '83', isInsured: 'no' },
-    expected: { willAccrueLoading: true, loadingYears: 53, loading: 0.7 }
+    expected: { willAccrueLoading: true, effectiveLoadingYears: 53, loading: 0.7 }
   },
   {
     input: { age: '64', ageLastJun30: '64', isInsured: 'no' },
-    expected: { willAccrueLoading: true, loadingYears: 34, loading: 0.68 }
+    expected: { willAccrueLoading: true, effectiveLoadingYears: 34, loading: 0.68 }
   },
   {
     input: { age: '64', ageLastJun30: '63', isInsured: 'no' },
-    expected: { willAccrueLoading: true, loadingYears: 33, loading: 0.66 }
+    expected: { willAccrueLoading: true, effectiveLoadingYears: 33, loading: 0.66 }
   },
   {
     input: { age: '33', ageLastJun30: '33', isInsured: 'no' },
-    expected: { willAccrueLoading: true, loadingYears: 3, loading: 0.06 }
+    expected: { willAccrueLoading: true, effectiveLoadingYears: 3, loading: 0.06 }
   },
   {
     input: { age: '33', ageLastJun30: '32', isInsured: 'no' },
-    expected: { willAccrueLoading: true, loadingYears: 2, loading: 0.04 }
+    expected: { willAccrueLoading: true, effectiveLoadingYears: 2, loading: 0.04 }
   },
   {
     input: { age: '32', ageLastJun30: '31', isInsured: 'no' },
-    expected: { willAccrueLoading: true, loadingYears: 1, loading: 0.02 }
+    expected: { willAccrueLoading: true, effectiveLoadingYears: 1, loading: 0.02 }
   },
   {
     input: { age: '31', ageLastJun30: '31', isInsured: 'no' },
-    expected: { willAccrueLoading: true, loadingYears: 1, loading: 0.02 }
+    expected: { willAccrueLoading: true, effectiveLoadingYears: 1, loading: 0.02 }
   },
   {
     input: { age: '31', ageLastJun30: '30', isInsured: 'no' },
-    expected: { willAccrueLoading: true, loadingYears: 0, loading: 0 }
+    expected: { willAccrueLoading: false, effectiveLoadingYears: 0, loading: 0 }
   }
 ]
   .map(x => {
@@ -88,7 +87,6 @@ if (tests.length) {
 } else {
   console.debug('👌 All tests passed');
 }
-*/
 
 class App extends Component {
   constructor(props) {
@@ -359,9 +357,9 @@ class App extends Component {
                     : 'the July 1st following your 31st birthday'
                 }, so you don’t
               have to pay a Lifetime Health Cover loading. ${
-                this.computedState.totalCoverPaid ? 'But in' : 'In'
+                this.computedState.totalCoverCost ? 'But in' : 'In'
               } that time you have paid `}
-                {this.computedState.totalCoverPaid ? this.renderResult('totalCoverPaid') : 'no'}
+                {this.computedState.totalCoverCost ? this.renderResult('totalCoverCost') : 'no'}
                 {` more than someone the same age as you who did not take out cover.`}
               </p>
             </Section>
@@ -371,14 +369,14 @@ class App extends Component {
             <Section key="loadingCodeResults">
               <p>
                 {`According to your answers, you have had `}
-                <Result>{`${this.computedState.loadingYears} year${
-                  this.computedState.loadingYears === 1 ? '' : 's'
+                <Result>{`${this.computedState.effectiveLoadingYears} year${
+                  this.computedState.effectiveLoadingYears === 1 ? '' : 's'
                 }`}</Result>
                 {` with no cover, so that means you will pay `}
-                {this.renderResult('totalExtraToPay')}
+                {this.renderResult('totalCoverLoadingCost')}
                 {` more for singles medium cover over 10 years than someone who took out hospital cover to avoid the loading.
               But by not having cover, you have saved `}
-                {this.renderResult('totalCoverPaid')}
+                {this.renderResult('totalCoverCost')}
                 {` in premiums on average compared with someone the same age as
               you.`}
               </p>

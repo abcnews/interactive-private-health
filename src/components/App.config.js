@@ -73,13 +73,13 @@ const FIELDS = (module.exports.FIELDS = {
 
 module.exports.DEV_STATE = {
   relationship: 'single',
-  income: '99000',
+  income: '100000',
   children: '0',
-  age: '50',
+  age: '70',
   partnerAge: null,
-  ageLastJun30: '50',
-  isInsured: 'yes',
-  whenInsured: '5 years ago',
+  ageLastJun30: '70',
+  isInsured: 'no',
+  whenInsured: null,
   location: 'Queensland',
   sex: 'male',
   isWorthIt: null
@@ -143,7 +143,12 @@ const KNOWN_PREMIUM_RISES = {
   2013: 0.056,
   2012: 0.0506,
   2011: 0.0556,
-  2005: 0.0796,
+  2010: 0.0578,
+  2009: 0.06,
+  2008: 0.05,
+  2007: 0.045,
+  2006: 0.0796,
+  2005: 0.0758,
   2004: 0.0758,
   2003: 0.074,
   2002: 0.069,
@@ -151,25 +156,20 @@ const KNOWN_PREMIUM_RISES = {
   2000: 0.018
 };
 const ASSUMED_PREMIUM_RISE = 0.05;
-const [MEDIUM_SINGLE_PREMIUMS_2000_TO_TEN_YEARS_FROM_NOW, MEDIUM_SINGLE_PREMIUMS_NEXT_10_YEARS_TOTAL] = (() => {
+const MEDIUM_SINGLE_PREMIUMS_2000_TO_TEN_YEARS_FROM_NOW = (() => {
   const premiums = {
     2018: PREMIUMS_2018.medium.single
   };
-  let nextTenYearsTotal = 0;
 
   for (let year = 2017; year >= 2000; year--) {
-    premiums[year] = premiums[year + 1] * (1 - (KNOWN_PREMIUM_RISES[year + 1] || ASSUMED_PREMIUM_RISE));
+    premiums[year] = premiums[year + 1] * (1 - KNOWN_PREMIUM_RISES[year]);
   }
 
   for (let year = 2019; year <= THIS_YEAR + 9; year++) {
     premiums[year] = premiums[year - 1] * (1 + ASSUMED_PREMIUM_RISE);
   }
 
-  for (let year = THIS_YEAR; year <= THIS_YEAR + 9; year++) {
-    nextTenYearsTotal += premiums[year];
-  }
-
-  return [premiums, nextTenYearsTotal];
+  return premiums;
 })();
 const FIRST_YEAR_LOADING = (module.exports.FIRST_YEAR_LOADING = (
   MEDIUM_SINGLE_PREMIUMS_2000_TO_TEN_YEARS_FROM_NOW[THIS_YEAR] * 0.02
@@ -465,51 +465,54 @@ module.exports.getComputedState = ({
   const reducedCoverMedium = rebate != null ? (coverMedium * (1 - rebate)).toFixed(0) : null;
   const reducedCoverTop = rebate != null ? (coverTop * (1 - rebate)).toFixed(0) : null;
   const wasBornBeforeJuly1934 = ageLastJun30 == null ? null : +ageLastJun30 > YEARS_SINCE_1934;
-  const willAccrueLoading = !wasBornBeforeJuly1934 && ageLastJun30 != null && +ageLastJun30 >= 30;
-  const loadingAccrualYears = willAccrueLoading ? Math.max(0, +ageLastJun30 - 30) : 0;
-  const yearsInsured =
+  const willAccrueLoading = !wasBornBeforeJuly1934 && ageLastJun30 != null && +ageLastJun30 >= 31;
+  const loadingYears = willAccrueLoading ? Math.max(0, +ageLastJun30 - 30) : 0;
+  const insuredYears =
     isInsured == null || whenInsured == null || !willAccrueLoading
       ? 0
       : FIELDS.whenInsured.choices.length - 1 - FIELDS.whenInsured.choices.indexOf(whenInsured);
-  const wasInsuredBeforeJul2000 = yearsInsured > YEARS_SINCE_2000;
-  const loadingYears =
+  const wasInsuredBeforeJul2000 = insuredYears > YEARS_SINCE_2000;
+  const effectiveLoadingYears =
     ageLastJun30 == null || isInsured == null || (isInsured == 'yes' && whenInsured == null)
       ? null
       : wasInsuredBeforeJul2000
         ? 0
-        : Math.max(0, loadingAccrualYears - yearsInsured);
-  const loading = loadingYears == null ? null : Math.min(0.7, loadingYears * 0.02);
+        : Math.max(0, loadingYears - insuredYears);
+  const loading = effectiveLoadingYears == null ? null : Math.min(0.7, effectiveLoadingYears * 0.02);
   const loadingCode = wasBornBeforeJuly1934
     ? 'before1934'
-    : ageLastJun30 != null && +ageLastJun30 < 31
+    : !willAccrueLoading
       ? 'under31'
-      : loadingYears == null
+      : effectiveLoadingYears == null
         ? null
-        : loadingYears == 0
+        : effectiveLoadingYears == 0
           ? 'continuous'
           : 'without';
-  const totalCoverPaid = (thisYearOffset => {
-    if (thisYearOffset == null) {
-      return null;
-    }
+  const totalCoverCost = !effectiveLoadingYears
+    ? null
+    : (() => {
+        let total = 0;
 
-    let total = 0;
+        for (let i = 0; i < effectiveLoadingYears; i++) {
+          console.log(
+            THIS_YEAR - effectiveLoadingYears + i - insuredYears,
+            MEDIUM_SINGLE_PREMIUMS_2000_TO_TEN_YEARS_FROM_NOW[THIS_YEAR - effectiveLoadingYears + i - insuredYears]
+          );
+          total +=
+            MEDIUM_SINGLE_PREMIUMS_2000_TO_TEN_YEARS_FROM_NOW[THIS_YEAR - effectiveLoadingYears + i - insuredYears] ||
+            0;
+        }
 
-    for (; thisYearOffset > 0; thisYearOffset--) {
-      total += MEDIUM_SINGLE_PREMIUMS_2000_TO_TEN_YEARS_FROM_NOW[THIS_YEAR - thisYearOffset - yearsInsured + 1] || 0;
-    }
-
-    return Math.round(total);
-  })(loadingYears);
-  const totalExtraToPay =
+        return Math.round(total);
+      })();
+  const totalCoverLoadingCost =
     loading == null
       ? null
       : (() => {
           let total = 0;
 
-          for (let penaltyOffset = 10; penaltyOffset > 0; penaltyOffset--) {
-            total +=
-              MEDIUM_SINGLE_PREMIUMS_2000_TO_TEN_YEARS_FROM_NOW[THIS_YEAR - penaltyOffset - yearsInsured + 1] || 0;
+          for (let i = 0; i < 10; i++) {
+            total += MEDIUM_SINGLE_PREMIUMS_2000_TO_TEN_YEARS_FROM_NOW[THIS_YEAR + i - insuredYears] || 0;
           }
 
           return Math.round(total * loading);
@@ -542,14 +545,14 @@ module.exports.getComputedState = ({
     reducedCoverTop,
     wasBornBeforeJuly1934,
     willAccrueLoading,
-    loadingAccrualYears,
-    yearsInsured,
-    wasInsuredBeforeJul2000,
     loadingYears,
+    insuredYears,
+    wasInsuredBeforeJul2000,
+    effectiveLoadingYears,
     loading,
     loadingCode,
-    totalCoverPaid,
-    totalExtraToPay,
+    totalCoverCost,
+    totalCoverLoadingCost,
     locationCode,
     coverage,
     waiting,
