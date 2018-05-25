@@ -59,24 +59,26 @@ class Input extends Component {
 
   render({ type, name, value, placeholder, attributes = {} }) {
     return (
-      <form
-        className={`${styles.root}${this.state.value !== null ? ` ${styles.editing}` : ''}`}
-        onSubmit={this.onSubmit}
-        data-name={name}
-      >
-        <input
-          ref={this.getInputRef}
-          name={name}
-          type={type || 'text'}
-          value={this.state.value !== null ? this.state.value : value}
-          placeholder={placeholder}
-          onBlur={this.onBlur}
-          onInput={this.onInput}
-          onKeyDown={this.onKeyDown}
-          {...attributes}
-        />
-        <button type="submit" tabIndex="-1" />
-      </form>
+      <div>
+        <form
+          className={`${styles.root}${this.state.value !== null ? ` ${styles.editing}` : ''}`}
+          onSubmit={this.onSubmit}
+          data-name={name}
+        >
+          <input
+            ref={this.getInputRef}
+            name={name}
+            type={type || 'text'}
+            value={this.state.value !== null ? this.state.value : value}
+            placeholder={placeholder}
+            onBlur={this.onBlur}
+            onInput={this.onInput}
+            onKeyDown={this.onKeyDown}
+            {...attributes}
+          />
+          <button type="submit" tabIndex="-1" />
+        </form>
+      </div>
     );
   }
 }
