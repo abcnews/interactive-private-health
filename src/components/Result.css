@@ -3,6 +3,7 @@
   color: var(--color-primary, black);
   font-family: var(--font-sans);
   font-weight: normal;
+  letter-spacing: 0.03125rem;
 }
 
 br + .root {
