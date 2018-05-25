@@ -316,14 +316,14 @@ class App extends Component {
           {this.renderField('ageLastJuly1')}
         </Section>
         {this.has(['ageLastJuly1']) &&
-          this.computedState.willAccrueLoading && (
+          !this.computedState.wasBornBeforeJuly1934 && (
             <Section key="isInsuredField">
               <h4>Do you have private health insurance?</h4>
               {this.renderField('isInsured')}
             </Section>
           )}
         {this.has(['ageLastJuly1']) &&
-          this.computedState.willAccrueLoading &&
+          !this.computedState.wasBornBeforeJuly1934 &&
           this.state.isInsured === 'yes' && (
             <Section key="whenInsuredField">
               <h4>When did you take out cover?</h4>
@@ -337,14 +337,15 @@ class App extends Component {
               <br />
               {this.renderResult('loading', 'percentage')}
             </h3>
-            {this.computedState.loadingCode !== 'before1934' && (
-              <p>
-                {`Let’s look at how much money you've saved and how much extra you'll spend, based on ${
-                  this.state.isInsured === 'no' ? 'your decision to not' : 'when you decided to'
-                } take out hospital cover. We’re
-                assuming for this calculation that you are single.`}
-              </p>
-            )}
+            {this.computedState.loadingCode !== 'before1934' &&
+              this.computedState.loadingCode !== 'continuous' && (
+                <p>
+                  {`Let’s look at how much money you've saved and how much extra you'll spend, based on ${
+                    this.state.isInsured === 'no' ? 'your decision to not' : 'when you decided to'
+                  } take out hospital cover.`}
+                  {this.state.relationship !== 'single' && ` We’re assuming for this calculation that you are single.`}
+                </p>
+              )}
           </Section>
         )}
         {this.has(['ageLastJuly1', 'loading']) &&
@@ -356,11 +357,11 @@ class App extends Component {
                     ? 'July 1st 2000'
                     : 'the July 1st following your 31st birthday'
                 }, so you don’t
-              have to pay a Lifetime Health Cover loading. ${
-                this.computedState.totalCoverCost ? 'But in' : 'In'
-              } that time you have paid `}
-                {this.computedState.totalCoverCost ? this.renderResult('totalCoverCost') : 'no'}
-                {` more than someone the same age as you who did not take out cover.`}
+              have to pay a Lifetime Health Cover loading.`}
+                {this.computedState.totalCoverCost && 'But in that time you have paid '}
+                {this.computedState.totalCoverCost && this.renderResult('totalCoverCost')}
+                {this.computedState.totalCoverCost &&
+                  'more than someone the same age as you who did not take out cover.'}
               </p>
             </Section>
           )}
@@ -372,12 +373,13 @@ class App extends Component {
                 <Result>{`${this.computedState.effectiveLoadingYears} year${
                   this.computedState.effectiveLoadingYears === 1 ? '' : 's'
                 }`}</Result>
-                {` with no cover, so that means you'${
-                  this.computedState.insuredYears >= 10 ? 've already paid' : 'll pay'
-                } `}
+                {` over age 30 with no cover, so${
+                  this.state.isInsured === 'yes' ? '' : ' if you take out insurance'
+                } that means you'${this.computedState.insuredYears >= 10 ? 've already paid' : 'll pay'} `}
                 {this.renderResult('totalCoverLoadingCost')}
-                {` more for singles medium cover over 10 years than someone who took out hospital cover early enough to avoid the loading.
-              But by not having cover, you have saved `}
+                {` more for singles medium cover over 10 years than someone who took out hospital cover early enough to avoid the loading. But by not having cover${
+                  this.state.isInsured === 'yes' ? '' : ' since the loading was introduced in 2000'
+                }, you have saved `}
                 {this.renderResult('totalCoverCost')}
                 {` in premiums on average compared with someone the same age as
               you.`}
@@ -387,15 +389,9 @@ class App extends Component {
         {this.computedState.loadingCode === 'under31' && (
           <Section key="loadingCodeResults">
             <p>
-              {`According to your answers, you are not${
-                this.state.isInsured === 'yes' ? '' : ' yet'
-              } subject to the Lifetime Health Cover loading. If you ${
-                this.state.isInsured === 'yes' ? `hadn't taken` : `don’t take`
-              }
-              out cover${this.state.isInsured === 'yes' ? '' : ' before July 1 of the year you turn 31'}, you${
-                this.state.isInsured === 'yes' ? `'d have paid` : ' will pay'
-              } an extra two per cent for every year you
-              delay${this.state.isInsured === 'yes' ? 'ed' : ''} having hospital insurance. That equates to `}
+              {this.state.isInsured === 'yes'
+                ? `According to your answers, you are not subject to the Lifetime Health Cover loading. If you hadn't taken out cover, you'd have paid an extra two per cent for every year you delayed having hospital insurance from July 1 after your 31st birthday. That equates to `
+                : `According to your answers, you are not yet subject to the Lifetime Health Cover loading. If you don't take out cover before July 1 after you turn 31, you will pay an extra two per cent for every year you delay having hospital insurance. If you do start paying for insurance, you will pay the loading every year for 10 years. That equates to `}
               <Result>{FORMATS.dollarAmount(FIRST_YEAR_LOADING)}</Result>
               {` in the first year for a medium level of hospital cover.`}
             </p>
