@@ -467,13 +467,6 @@ class App extends Component {
                 ]}
               />
             )}
-            {this.has(['benefits']) && (
-              <p>
-                {`People of your age with private hospital insurance are paid on average $${
-                  this.computedState.benefits
-                } in benefits each year.`}
-              </p>
-            )}
           </Section>
         ) : (
           <Blocker />
@@ -504,6 +497,13 @@ class App extends Component {
                   ['oop', 'Median out-of-pocket cost', 'dollarAmount']
                 ]}
               />
+            )}
+            {this.has(['benefits']) && (
+              <p>
+                {`People your age with private hospital insurance are paid on average $${
+                  this.computedState.benefits
+                } in benefits each year.`}
+              </p>
             )}
           </Section>
         ) : (
