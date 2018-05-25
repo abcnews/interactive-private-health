@@ -220,10 +220,10 @@ class App extends Component {
               {this.renderResult('surcharge')}
             </h3>
             <p>
-              {`That means the Government taxes you `}
+              {`That means the Government charges you `}
               {this.renderResult('surcharge')}
               {this.has(['lowIncomeSaving']) && '*'}
-              {` if you don’t have private hospital cover. On average, for your household, hospital cover costs:`}
+              {` if you don’t have private hospital cover. In comparison, your household cover costs on average:`}
             </p>
             <ul>
               <li>
