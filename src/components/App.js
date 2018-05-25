@@ -483,7 +483,7 @@ class App extends Component {
               procedures={this.computedState.topN}
               columns={[
                 ['totalCost', 'Total cost', 'dollarAmount'],
-                ['oop', 'Median out-of-pocket cost', 'dollarAmount']
+                ['oop', 'Median cost paid by patient', 'dollarAmount']
               ]}
             />
             {this.has(['topNKids']) && (
@@ -494,7 +494,7 @@ class App extends Component {
                 procedures={this.computedState.topNKids}
                 columns={[
                   ['totalCost', 'Total cost', 'dollarAmount'],
-                  ['oop', 'Median out-of-pocket cost', 'dollarAmount']
+                  ['oop', 'Median cost paid by patient', 'dollarAmount']
                 ]}
               />
             )}
