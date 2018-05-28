@@ -464,7 +464,7 @@ module.exports.getComputedState = ({
   const reducedCoverBasic = rebate != null ? (coverBasic * (1 - rebate)).toFixed(0) : null;
   const reducedCoverMedium = rebate != null ? (coverMedium * (1 - rebate)).toFixed(0) : null;
   const reducedCoverTop = rebate != null ? (coverTop * (1 - rebate)).toFixed(0) : null;
-  const wasBornBeforeJuly1934 = ageLastJuly1 == null ? null : +ageLastJuly1 > YEARS_SINCE_1934;
+  const wasBornBeforeJuly1934 = ageLastJuly1 == null ? null : +ageLastJuly1 >= YEARS_SINCE_1934;
   const willAccrueLoading = !wasBornBeforeJuly1934 && ageLastJuly1 != null && +ageLastJuly1 >= 31;
   const loadingYears = willAccrueLoading ? Math.max(0, +ageLastJuly1 - 30) : 0;
   const insuredYears =
