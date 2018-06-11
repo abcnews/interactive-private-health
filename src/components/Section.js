@@ -5,37 +5,10 @@ const EMBEDDED_ATTRIBUTE = 'embedded';
 
 const embedExternalContent = window.ABC ? ABC.News.embedExternalLinks.embedExternalContent : () => {};
 
-let revealDelay = 0;
-
 class Section extends Component {
   constructor(props) {
     super(props);
-
-    // this.onRevelaled = this.onRevelaled.bind(this);
   }
-
-  // maybeReveal() {
-  //   setTimeout(() => {
-  //     if (this.wasAlreadyRevealed || window.getComputedStyle(this.base).display === 'none') {
-  //       return;
-  //     }
-
-  //     this.wasAlreadyRevealed = true;
-  //     this.base.style.setProperty('animation-delay', `${0.125 * revealDelay++}s`);
-  //     this.base.addEventListener('animationend', this.onRevelaled);
-  //     this.base.classList.add(styles.reveal);
-  //   }, 0);
-  // }
-
-  // onRevelaled() {
-  //   revealDelay--;
-
-  //   if (this.base) {
-  //     this.base.style.setProperty('animation-delay', null);
-  //     this.base.removeEventListener('animationend', this.onRevelaled);
-  //     this.base.classList.remove(styles.reveal);
-  //   }
-  // }
 
   componentDidMount() {
     if (this.props.elements) {
@@ -52,13 +25,7 @@ class Section extends Component {
         }
       });
     }
-
-    // this.maybeReveal();
   }
-
-  // componentDidUpdate() {
-  //   this.maybeReveal();
-  // }
 
   componentWillUnmount() {
     if (this.props.elements) {
@@ -72,7 +39,7 @@ class Section extends Component {
 
   render({ key, elements, className, children, ...props }) {
     return (
-      <div key={key} className={`${className ? `${className} ` : ''}u-richtext`} {...props}>
+      <div key={key} className={`${styles.root}${className ? ` ${className}` : ''} u-richtext`} {...props}>
         {children}
       </div>
     );
