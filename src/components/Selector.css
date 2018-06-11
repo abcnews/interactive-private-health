@@ -57,6 +57,14 @@
   letter-spacing: 0.0625rem;
 }
 
+@media print {
+  .root > button,
+  .dropdown::after {
+    color: black;
+    color: var(--color-secondary-dark, black);
+  }
+}
+
 .root > button,
 .dropdown > select {
   border: 0;
@@ -122,6 +130,13 @@ button.chosen,
 .dropdown.chosen {
   background-color: black;
   background-color: var(--color-secondary-dark, black);
+}
+
+@media print {
+  button.chosen,
+  .dropdown.chosen {
+    border: 0.0625rem solid currentColor;
+  }
 }
 
 .innerFocusRing {
