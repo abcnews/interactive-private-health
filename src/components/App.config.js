@@ -514,15 +514,15 @@ module.exports.getComputedState = ({
           return Math.round(total * loading);
         })();
   const locationCode = location ? LOCATION_CODES[location] : null;
-  const coverage =
-    age == null || sex == null
-      ? null
-      : COVERAGE_PROPORTION[sex][Math.min(COVERAGE_PROPORTION[sex].length - 1, Math.floor(age / 5))];
   const waiting = age == null || sex == null ? null : getWaitingProcedures(age, sex);
   const waitingKids = +children ? WAITING_KIDS : null;
   const topN = age == null || sex == null ? null : getTopNProcedures(age, sex);
   const topNKids = +children ? TOP_N_KIDS : null;
   const benefits = age == null ? null : getBenefits(age);
+  const coverage =
+    age == null || sex == null
+      ? null
+      : COVERAGE_PROPORTION[sex][Math.min(COVERAGE_PROPORTION[sex].length - 1, Math.floor(age / 5))];
 
   return {
     household,
@@ -550,11 +550,11 @@ module.exports.getComputedState = ({
     totalCoverCost,
     totalCoverLoadingCost,
     locationCode,
-    coverage,
     waiting,
     waitingKids,
     topN,
     topNKids,
-    benefits
+    benefits,
+    coverage
   };
 };

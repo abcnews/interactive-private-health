@@ -420,39 +420,11 @@ class App extends Component {
         {this.has(['locationCode']) ? this.renderContent(`ambulance${this.computedState.locationCode}`) : <Blocker />}
         {this.has(['locationCode']) && this.renderContent('postambulance')}
 
-        {this.renderContent('prereasons')}
+        {this.renderContent('prewaiting')}
         <Section key="sexField">
           <h4>What sex are you?</h4>
           {this.renderField('sex')}
         </Section>
-        {this.has(['coverage']) ? (
-          <Section key="coverageResults">
-            <p>
-              {`For your age group and sex, `}
-              {this.renderResult('coverage', 'percentage')}
-              {` have hospital cover.`}
-            </p>
-            <Split>
-              <div>
-                <label>
-                  Reasons for <strong>having</strong> private health insurance
-                </label>
-                <RelativeBars items={REASONS_FOR_HAVING} color={'#FCBA04'} />
-              </div>
-              <div>
-                <label>
-                  Reasons for <strong>not having</strong> private health insurance
-                </label>
-                <RelativeBars items={REASONS_FOR_NOT_HAVING} color={'#00C6F7'} />
-              </div>
-            </Split>
-          </Section>
-        ) : (
-          <Blocker />
-        )}
-        {this.has(['coverage']) && this.renderContent('postreasons')}
-
-        {this.renderContent('prewaiting')}
         {this.has(['waiting']) ? (
           <Section key="waitingResults">
             <p>{`For your age group and sex, ${
@@ -522,6 +494,34 @@ class App extends Component {
           <Blocker />
         )}
         {this.has(['topN']) && this.renderContent('postneed')}
+
+        {this.renderContent('prereasons')}
+        {this.has(['coverage']) ? (
+          <Section key="coverageResults">
+            <p>
+              {`For your age group and sex, `}
+              {this.renderResult('coverage', 'percentage')}
+              {` have hospital cover.`}
+            </p>
+            <Split>
+              <div>
+                <label>
+                  Reasons for <strong>having</strong> private health insurance
+                </label>
+                <RelativeBars items={REASONS_FOR_HAVING} color={'#FCBA04'} />
+              </div>
+              <div>
+                <label>
+                  Reasons for <strong>not having</strong> private health insurance
+                </label>
+                <RelativeBars items={REASONS_FOR_NOT_HAVING} color={'#00C6F7'} />
+              </div>
+            </Split>
+          </Section>
+        ) : (
+          <Blocker />
+        )}
+        {this.has(['coverage']) && this.renderContent('postreasons')}
 
         {this.renderContent('prepoll')}
         <Section key="isWorthItField">
