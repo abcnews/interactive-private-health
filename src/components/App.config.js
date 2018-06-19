@@ -111,26 +111,26 @@ const SURCHARGES = [0, 0.01, 0.0125, 0.015]; // x=tier
 
 const LOW_INCOME_THRESHOLD = (module.exports.LOW_INCOME_THRESHOLD = 21655);
 
-const PREMIUMS_2018 = {
+const PREMIUMS_2018 = (module.exports.PREMIUMS_2018 = {
   basic: {
     single: 1336,
-    singleParent: 2245,
+    'single parent': 2245,
     couple: 2602,
     family: 2715
   },
   medium: {
     single: 1711,
-    singleParent: 2843,
+    'single parent': 2843,
     couple: 3423,
     family: 3423
   },
   top: {
     single: 1872,
-    singleParent: 3295,
+    'single parent': 3295,
     couple: 3738,
     family: 3747
   }
-};
+});
 
 const REBATES = [[0.2542, 0.1694, 0.0847, 0], [0.2965, 0.2118, 0.1271, 0], [0.3389, 0.2542, 0.1694, 0]]; // x=age; y=tier
 
@@ -433,7 +433,7 @@ module.exports.getComputedState = ({
       : children == 0
         ? relationship
         : relationship == 'single'
-          ? 'singleParent'
+          ? 'single parent'
           : 'family';
   const incomeRelationshipFactor = household == null ? null : household == 'single' ? 1 : 2;
   const incomeChildOffset = children == null ? null : children > 1 ? 1500 * (children - 1) : 0;

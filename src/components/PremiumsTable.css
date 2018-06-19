@@ -1,0 +1,7 @@
+.root {
+}
+
+.root tr > :nth-child(1),
+.root tr > :nth-child(2) {
+  text-align: left;
+}

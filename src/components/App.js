@@ -4,6 +4,7 @@ const Blocker = require('./Blocker');
 const Dev = require('./Dev');
 const Input = require('./Input');
 const Poll = require('./Poll');
+const PremiumsTable = require('./PremiumsTable');
 const ProceduresTable = require('./ProceduresTable');
 const RelativeBars = require('./RelativeBars');
 const Result = require('./Result');
@@ -186,11 +187,26 @@ class App extends Component {
       <div className={styles.root}>
         {this.renderContent('intro')}
 
-        {this.renderContent('presurcharge')}
+        {this.renderContent('precost')}
         <Section key="relationshipField">
           <h4>Are you single or one of a couple?</h4>
           {this.renderField('relationship')}
         </Section>
+        <Section key="childrenField">
+          <h4>How many dependent children do you have?</h4>
+          {this.renderField('children')}
+        </Section>
+        {this.has(['household']) ? (
+          <Section key="costResults">
+            <p>These are the levels of cover, moving from lowest to highest cost:</p>
+            <PremiumsTable household={this.computedState.household} />
+          </Section>
+        ) : (
+          <Blocker />
+        )}
+        {this.has(['household']) && this.renderContent('postcost')}
+
+        {this.renderContent('presurcharge')}
         <Section key="incomeField">
           <h4>
             {this.state.relationship === 'couple'
@@ -207,10 +223,6 @@ class App extends Component {
               </a>.
             </small>
           </p>
-        </Section>
-        <Section key="childrenField">
-          <h4>How many dependent children do you have?</h4>
-          {this.renderField('children')}
         </Section>
         {this.has(['surcharge']) ? (
           <Section key="surchargeResults">
