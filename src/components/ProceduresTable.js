@@ -1,5 +1,5 @@
 const { h, Component } = require('preact');
-const { FORMATS, LINKS } = require('./App.config');
+const { FORMATS } = require('./App.config');
 const styles = require('./ProceduresTable.css');
 
 module.exports = ({ procedures, columns }) => (
