@@ -1,18 +1,18 @@
 {
   "name": "interactive-private-health",
   "version": "1.10.0",
-  "description": "A project generated from aunty's preact-app template.",
+  "description": "A project generated from aunty's preact app template.",
   "license": "MIT",
   "private": true,
   "contributors": [
     "Colin Gourlay <Gourlay.Colin@abc.net.au>"
   ],
-  "aunty": "preact-app",
+  "aunty": "preact",
   "scripts": {
     "start": "aunty serve"
   },
   "devDependencies": {
-    "@abcnews/aunty": "^7.8.0"
+    "@abcnews/aunty": "^9.0.0"
   },
   "dependencies": {
     "@abcnews/poll-counters-client": "^1.1.0",
