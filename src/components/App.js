@@ -137,12 +137,8 @@ class App extends Component {
     );
   }
 
-  renderContent(key, shouldReveal) {
-    return (
-      this.props.content[key] && (
-        <Section key={`${key}Content`} elements={this.props.content[key]} reveal={shouldReveal} />
-      )
-    );
+  renderContent(key) {
+    return this.props.content[key] && <Section key={`${key}Content`} elements={this.props.content[key]} />;
   }
 
   renderField(name) {
@@ -528,15 +524,19 @@ class App extends Component {
           <h4>Is private health insurance worth it?</h4>
           {this.renderField('isWorthIt')}
         </Section>
-        {this.has(['isWorthIt']) && (
+        {this.has(['isWorthIt']) ? (
           <Poll
             key={'isWorthItPoll'}
             choices={FIELDS.isWorthIt.choices}
             value={this.state.isWorthIt}
             results={this.state.isWorthItAudience}
           />
+        ) : (
+          <Blocker />
         )}
         {this.has(['isWorthIt']) && this.renderContent('postpoll')}
+
+        {this.renderContent('notes')}
 
         {isDev && <Dev inputs={this.state} outputs={this.computedState} />}
       </div>
