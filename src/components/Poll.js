@@ -22,8 +22,8 @@ const Poll = ({ choices, results, value }) => {
       {!results && <Loader overlay>Your response has been submitted</Loader>}
       <h3>
         {results
-          ? `${Math.round(counts[value] / total * 100)}% of respondents agree with you so far`
-          : `Let's discover what other respondents think…`}
+          ? `${Math.round((counts[value] / total) * 100)}% of respondents agree with you so far`
+          : `Let's see what other respondents think…`}
       </h3>
       <dl>
         {choices.map(choice => (
@@ -33,7 +33,7 @@ const Poll = ({ choices, results, value }) => {
               <CountUp
                 className={styles.valuePct}
                 start={0}
-                end={results ? Math.round(counts[choice] / total * 100) : 0}
+                end={results ? Math.round((counts[choice] / total) * 100) : 0}
                 duration={0.5}
                 suffix={'%'}
               />
