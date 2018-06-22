@@ -499,6 +499,10 @@ class App extends Component {
               {this.renderResult('coverage', 'percentage')}
               {` have hospital cover.`}
             </p>
+            <p>
+              Let's explore what people say when they're asked to explain their decision about whether to buy private
+              health insurance.
+            </p>
             <Split>
               <div>
                 <label>
