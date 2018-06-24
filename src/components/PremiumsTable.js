@@ -23,7 +23,7 @@ module.exports = ({ household }) => (
       <tr>
         <td>Medium</td>
         <td>
-          Includes things not in basic cover; restrictions/exclusions include pregnancy and birth services, IVF,
+          Includes things not in basic cover; restrictions / exclusions include pregnancy and birth services, IVF,
           cataracts and hip replacements
         </td>
         <td>{FORMATS.dollarAmount(PREMIUMS_2018.medium[household])}</td>
