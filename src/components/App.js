@@ -481,7 +481,7 @@ class App extends Component {
               <p>
                 {'People your age with private hospital insurance are paid on average '}
                 {this.renderResult('benefits')}
-                {'in benefits each year.'}
+                {' in benefits each year.'}
               </p>
             )}
           </Section>
