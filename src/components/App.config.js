@@ -478,7 +478,7 @@ module.exports.getComputedState = ({
         ? 0
         : Math.max(0, loadingYears - insuredYears);
 
-  const continuousCoverageYears = effectiveLoadingYears == 0 ? Math.min(loadingYears, YEARS_SINCE_2000) : 0;
+  const continuousCoverageYears = effectiveLoadingYears == 0 ? Math.min(loadingYears, YEARS_SINCE_2000 + 1) : 0;
   const loading = effectiveLoadingYears == null ? null : Math.min(0.7, effectiveLoadingYears * 0.02);
   const loadingCode = wasBornBeforeJuly1934
     ? 'before1934'
