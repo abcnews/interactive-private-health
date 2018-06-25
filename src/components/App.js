@@ -30,39 +30,39 @@ const styles = require('./App.css');
 // const tests = [
 //   {
 //     input: { age: '84', ageLastJuly1: '84', isInsured: 'no' },
-//     expected: { willAccrueLoading: false, effectiveLoadingYears: 0, loading: 0 }
+//     expected: { shouldAccrueLoading: false, effectiveLoadingYears: 0, loading: 0 }
 //   },
 //   {
 //     input: { age: '84', ageLastJuly1: '83', isInsured: 'no' },
-//     expected: { willAccrueLoading: true, effectiveLoadingYears: 53, loading: 0.7 }
+//     expected: { shouldAccrueLoading: true, effectiveLoadingYears: 53, loading: 0.7 }
 //   },
 //   {
 //     input: { age: '64', ageLastJuly1: '64', isInsured: 'no' },
-//     expected: { willAccrueLoading: true, effectiveLoadingYears: 34, loading: 0.68 }
+//     expected: { shouldAccrueLoading: true, effectiveLoadingYears: 34, loading: 0.68 }
 //   },
 //   {
 //     input: { age: '64', ageLastJuly1: '63', isInsured: 'no' },
-//     expected: { willAccrueLoading: true, effectiveLoadingYears: 33, loading: 0.66 }
+//     expected: { shouldAccrueLoading: true, effectiveLoadingYears: 33, loading: 0.66 }
 //   },
 //   {
 //     input: { age: '33', ageLastJuly1: '33', isInsured: 'no' },
-//     expected: { willAccrueLoading: true, effectiveLoadingYears: 3, loading: 0.06 }
+//     expected: { shouldAccrueLoading: true, effectiveLoadingYears: 3, loading: 0.06 }
 //   },
 //   {
 //     input: { age: '33', ageLastJuly1: '32', isInsured: 'no' },
-//     expected: { willAccrueLoading: true, effectiveLoadingYears: 2, loading: 0.04 }
+//     expected: { shouldAccrueLoading: true, effectiveLoadingYears: 2, loading: 0.04 }
 //   },
 //   {
 //     input: { age: '32', ageLastJuly1: '31', isInsured: 'no' },
-//     expected: { willAccrueLoading: true, effectiveLoadingYears: 1, loading: 0.02 }
+//     expected: { shouldAccrueLoading: true, effectiveLoadingYears: 1, loading: 0.02 }
 //   },
 //   {
 //     input: { age: '31', ageLastJuly1: '31', isInsured: 'no' },
-//     expected: { willAccrueLoading: true, effectiveLoadingYears: 1, loading: 0.02 }
+//     expected: { shouldAccrueLoading: true, effectiveLoadingYears: 1, loading: 0.02 }
 //   },
 //   {
 //     input: { age: '31', ageLastJuly1: '30', isInsured: 'no' },
-//     expected: { willAccrueLoading: false, effectiveLoadingYears: 0, loading: 0 }
+//     expected: { shouldAccrueLoading: false, effectiveLoadingYears: 0, loading: 0 }
 //   }
 // ]
 //   .map(x => {
@@ -366,10 +366,9 @@ class App extends Component {
                     : 'the July 1st following your 31st birthday'
                 }, so you don’t
               have to pay a Lifetime Health Cover loading.`}
-                {this.computedState.totalCoverCost && 'But in that time you have paid '}
-                {this.computedState.totalCoverCost && this.renderResult('totalCoverCost')}
-                {this.computedState.totalCoverCost &&
-                  'more than someone the same age as you who did not take out cover.'}
+                {this.computedState.continuousCoverageCost && ' But you have paid '}
+                {this.computedState.continuousCoverageCost && this.renderResult('continuousCoverageCost')}
+                {this.computedState.continuousCoverageCost && ' for hospital insurance on average in that time.'}
               </p>
             </Section>
           )}
@@ -480,9 +479,9 @@ class App extends Component {
             )}
             {this.has(['benefits']) && (
               <p>
-                {`People your age with private hospital insurance are paid on average $${
-                  this.computedState.benefits
-                } in benefits each year.`}
+                {'People your age with private hospital insurance are paid on average '}
+                {this.renderResult('benefits')}
+                {'in benefits each year.'}
               </p>
             )}
           </Section>

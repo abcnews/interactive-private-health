@@ -75,11 +75,11 @@ module.exports.DEV_STATE = {
   relationship: 'single',
   income: '100000',
   children: '0',
-  age: '70',
+  age: '40',
   partnerAge: null,
-  ageLastJuly1: '70',
-  isInsured: 'no',
-  whenInsured: null,
+  ageLastJuly1: '40',
+  isInsured: 'yes',
+  whenInsured: '10 years ago',
   location: 'Queensland',
   sex: 'male',
   isWorthIt: null
@@ -424,8 +424,7 @@ module.exports.getComputedState = ({
   isInsured,
   whenInsured,
   location,
-  sex,
-  isWorthIt
+  sex
 }) => {
   const household =
     relationship == null || children == null
@@ -465,10 +464,10 @@ module.exports.getComputedState = ({
   const reducedCoverMedium = rebate != null ? (coverMedium * (1 - rebate)).toFixed(0) : null;
   const reducedCoverTop = rebate != null ? (coverTop * (1 - rebate)).toFixed(0) : null;
   const wasBornBeforeJuly1934 = ageLastJuly1 == null ? null : +ageLastJuly1 >= YEARS_SINCE_1934;
-  const willAccrueLoading = !wasBornBeforeJuly1934 && ageLastJuly1 != null && +ageLastJuly1 >= 31;
-  const loadingYears = willAccrueLoading ? Math.max(0, +ageLastJuly1 - 30) : 0;
+  const shouldAccrueLoading = !wasBornBeforeJuly1934 && ageLastJuly1 != null && +ageLastJuly1 >= 31;
+  const loadingYears = shouldAccrueLoading ? Math.max(0, +ageLastJuly1 - 30) : 0;
   const insuredYears =
-    isInsured == null || whenInsured == null || !willAccrueLoading
+    isInsured == null || whenInsured == null || !shouldAccrueLoading
       ? 0
       : FIELDS.whenInsured.choices.length - 1 - FIELDS.whenInsured.choices.indexOf(whenInsured);
   const wasInsuredBeforeJul2000 = insuredYears > YEARS_SINCE_2000;
@@ -478,12 +477,14 @@ module.exports.getComputedState = ({
       : wasInsuredBeforeJul2000
         ? 0
         : Math.max(0, loadingYears - insuredYears);
+
+  const continuousCoverageYears = effectiveLoadingYears == 0 ? Math.min(loadingYears, YEARS_SINCE_2000) : 0;
   const loading = effectiveLoadingYears == null ? null : Math.min(0.7, effectiveLoadingYears * 0.02);
   const loadingCode = wasBornBeforeJuly1934
     ? 'before1934'
     : effectiveLoadingYears == null
       ? null
-      : !willAccrueLoading
+      : !shouldAccrueLoading
         ? 'under31'
         : effectiveLoadingYears == 0
           ? 'continuous'
@@ -513,6 +514,17 @@ module.exports.getComputedState = ({
 
           return Math.round(total * loading);
         })();
+  const continuousCoverageCost = !continuousCoverageYears
+    ? null
+    : (() => {
+        let total = 0;
+
+        for (let i = 0; i < continuousCoverageYears; i++) {
+          total += MEDIUM_SINGLE_PREMIUMS_2000_TO_TEN_YEARS_FROM_NOW[THIS_YEAR - continuousCoverageYears + i] || 0;
+        }
+
+        return Math.round(total);
+      })();
   const locationCode = location ? LOCATION_CODES[location] : null;
   const waiting = age == null || sex == null ? null : getWaitingProcedures(age, sex);
   const waitingKids = +children ? WAITING_KIDS : null;
@@ -540,15 +552,17 @@ module.exports.getComputedState = ({
     reducedCoverMedium,
     reducedCoverTop,
     wasBornBeforeJuly1934,
-    willAccrueLoading,
+    shouldAccrueLoading,
     loadingYears,
     insuredYears,
     wasInsuredBeforeJul2000,
     effectiveLoadingYears,
+    continuousCoverageYears,
     loading,
     loadingCode,
     totalCoverCost,
     totalCoverLoadingCost,
+    continuousCoverageCost,
     locationCode,
     waiting,
     waitingKids,
