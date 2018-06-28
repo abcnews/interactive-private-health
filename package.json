@@ -9,10 +9,11 @@
   ],
   "aunty": "preact",
   "scripts": {
-    "start": "aunty serve"
+    "start": "aunty serve",
+    "test": "aunty test"
   },
   "devDependencies": {
-    "@abcnews/aunty": "^9.0.0"
+    "@abcnews/aunty": "^9.3.1"
   },
   "dependencies": {
     "@abcnews/poll-counters-client": "^1.1.0",
