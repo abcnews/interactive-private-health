@@ -210,10 +210,11 @@ class App extends Component {
               : `What’s your taxable income?`}
           </h4>
           {this.renderField('income')}
-          <p>
+          <p id="incomeFieldDescription">
             <small>
-              Taxable income should include any reportable fringe benefits and superannuation contributions and also any
-              net investment losses.{' '}
+              {
+                'Taxable income should include any reportable fringe benefits and superannuation contributions and also any net investment losses. '
+              }
               <a href={LINKS.surcharge} target="_blank">
                 Find more information on what is included
               </a>.

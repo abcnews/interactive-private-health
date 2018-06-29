@@ -12,24 +12,27 @@ const YEARS_SINCE_1934 = Math.floor((JUL_1_MOST_RECENT - JUL_1_1934) / YEAR_MS);
 
 const FIELDS = (module.exports.FIELDS = {
   relationship: { choices: ['single', 'couple'] },
+  children: {
+    choices: Array.apply(null, { length: 16 }).map(String.call, String),
+    asButtons: 4
+  },
   income: {
     type: 'number',
     placeholder: state => `Enter your${state.relationship == 'couple' ? ' combined' : ''} taxable income`,
     attributes: {
+      'aria-describedby': 'incomeFieldDescription',
+      autocomplete: 'off',
       min: 0,
       max: 1e9,
-      step: 1000
+      step: 500
     }
-  },
-  children: {
-    choices: Array.apply(null, { length: 16 }).map(String.call, String),
-    asButtons: 4
   },
   age: {
     type: 'number',
     placeholder: `Enter your age`,
     resets: ['ageLastJuly1', 'whenInsured'],
     attributes: {
+      autocomplete: 'off',
       min: 18
     }
   },
@@ -37,6 +40,7 @@ const FIELDS = (module.exports.FIELDS = {
     type: 'number',
     placeholder: `Enter your partner's age`,
     attributes: {
+      autocomplete: 'off',
       min: 18
     }
   },
