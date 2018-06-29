@@ -36,14 +36,12 @@ class Input extends Component {
   }
 
   onInput() {
-    const valueOrNull = this._input.value || null;
-
-    if (valueOrNull && this._input.type === 'number') {
-      this._input.value = numeric(valueOrNull);
+    if (this._input.value && this._input.type === 'number') {
+      this._input.value = numeric(this._input.value);
     }
 
-    if (valueOrNull !== this.props.value) {
-      this.setState({ value: valueOrNull });
+    if (this._input.value !== this.props.value) {
+      this.setState({ value: this._input.value });
     }
   }
 
