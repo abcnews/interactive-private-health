@@ -23,8 +23,7 @@ const FIELDS = (module.exports.FIELDS = {
       'aria-describedby': 'incomeFieldDescription',
       autocomplete: 'off',
       min: 0,
-      max: 1e9,
-      step: 500
+      max: 1e9
     }
   },
   age: {
