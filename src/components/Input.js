@@ -2,6 +2,7 @@ const { h, Component } = require('preact');
 const styles = require('./Input.css');
 
 const NON_NUMERIC_PATTERN = /[^\d.-]/g;
+const ESC_KEY = 27;
 const K_KEY = 75;
 
 const numeric = value => value.replace(NON_NUMERIC_PATTERN, '');
@@ -46,6 +47,11 @@ class Input extends Component {
   }
 
   onKeyDown({ keyCode }) {
+    // When the user presses escape, reset `state.value` so `props.value` shows
+    if (keyCode === ESC_KEY) {
+      return this.setState({ value: null });
+    }
+
     // When the user types 'k' in a number input, and the current absolute value is less than 1000, append '000'
     if (
       keyCode === K_KEY &&
@@ -62,7 +68,7 @@ class Input extends Component {
       event.preventDefault();
     }
 
-    let value = this._input.value;
+    const value = this._input.value;
 
     this.setState({ value: null });
 
