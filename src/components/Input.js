@@ -2,8 +2,6 @@ const { h, Component } = require('preact');
 const styles = require('./Input.css');
 
 const NON_NUMERIC_PATTERN = /[^\d.-]/g;
-const ESC_KEY = 27;
-const K_KEY = 75;
 
 const numeric = value => value.replace(NON_NUMERIC_PATTERN, '');
 
@@ -14,7 +12,6 @@ class Input extends Component {
     this.getInputRef = this.getInputRef.bind(this);
     this.onBlur = this.onBlur.bind(this);
     this.onInput = this.onInput.bind(this);
-    this.onKeyDown = this.onKeyDown.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
 
     this.state = { value: null };
@@ -43,23 +40,6 @@ class Input extends Component {
 
     if (this._input.value !== this.props.value) {
       this.setState({ value: this._input.value });
-    }
-  }
-
-  onKeyDown({ keyCode }) {
-    // When the user presses escape, reset `state.value` so `props.value` shows
-    if (keyCode === ESC_KEY) {
-      return this.setState({ value: null });
-    }
-
-    // When the user types 'k' in a number input, and the current absolute value is less than 1000, append '000'
-    if (
-      keyCode === K_KEY &&
-      this._input.type === 'number' &&
-      this._input.value.length > 0 &&
-      this._input.value.length < 4
-    ) {
-      this._input.value = `${numeric(this._input.value)}000`;
     }
   }
 
@@ -95,7 +75,6 @@ class Input extends Component {
             placeholder={placeholder}
             onBlur={this.onBlur}
             onInput={this.onInput}
-            onKeyDown={this.onKeyDown}
             {...attributes}
           />
           <button type="submit" tabIndex="-1" />
