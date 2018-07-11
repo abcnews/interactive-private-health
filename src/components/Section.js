@@ -1,10 +1,6 @@
 const { h, Component } = require('preact');
 const styles = require('./Section.css');
 
-const EMBEDDED_ATTRIBUTE = 'embedded';
-
-const embedExternalContent = window.ABC ? ABC.News.embedExternalLinks.embedExternalContent : () => {};
-
 class Section extends Component {
   constructor(props) {
     super(props);
@@ -14,15 +10,6 @@ class Section extends Component {
     if (this.props.elements) {
       this.props.elements.forEach(element => {
         this.base.appendChild(element);
-
-        if (element.hasAttribute(EMBEDDED_ATTRIBUTE)) {
-          return;
-        }
-
-        if (element.tagName === 'FIGURE' || element.className.indexOf('inline-content full') > -1) {
-          element.setAttribute(EMBEDDED_ATTRIBUTE, '');
-          embedExternalContent(element);
-        }
       });
     }
   }
