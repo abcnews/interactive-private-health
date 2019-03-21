@@ -258,7 +258,7 @@ const PROCEDURES = (module.exports.PROCEDURES = [
   ['Hysterectomy (abdominal / vaginal / laparoscopic)', 'Removal of uterus', 11457, 55, 0, 0, 0],
   ['Knee replacement', '', 16853, 195, 22700, 0.17, 520],
   ['Laparoscopy', 'Exploratory procedure of abdomen', 9706, 47, 5100, 26, 500],
-  ['Masectomy', 'Removal of breast', 4357, 16, 0, 0, 0],
+  ['Mastectomy', 'Removal of breast', 4357, 16, 0, 0, 0],
   ['Prostate surgery', '', 8216, 41, 7100, 0.32, 380],
   ['Sleep studies', '', 0, 0, 1300, 0.94, 250],
   ['Sleeve gastrectomy', 'Surgery to reduce stomach size', 0, 0, 12200, 0.18, 500],
@@ -433,22 +433,22 @@ module.exports.getComputedState = ({
     relationship == null || children == null
       ? null
       : children == 0
-        ? relationship
-        : relationship == 'single'
-          ? 'single parent'
-          : 'family';
+      ? relationship
+      : relationship == 'single'
+      ? 'single parent'
+      : 'family';
   const incomeRelationshipFactor = household == null ? null : household == 'single' ? 1 : 2;
   const incomeChildOffset = children == null ? null : children > 1 ? 1500 * (children - 1) : 0;
   const incomeTier =
     income == null || household == null
       ? null
       : income <= 90000 * incomeRelationshipFactor + incomeChildOffset
-        ? 0
-        : income <= 105000 * incomeRelationshipFactor + incomeChildOffset
-          ? 1
-          : income <= 140000 * incomeRelationshipFactor + incomeChildOffset
-            ? 2
-            : 3;
+      ? 0
+      : income <= 105000 * incomeRelationshipFactor + incomeChildOffset
+      ? 1
+      : income <= 140000 * incomeRelationshipFactor + incomeChildOffset
+      ? 2
+      : 3;
   const surcharge = incomeTier == null ? null : Math.round(income * SURCHARGES[incomeTier]);
   const lowIncomeSaving =
     relationship == 'single' || incomeTier == null || incomeTier == 0
@@ -478,20 +478,20 @@ module.exports.getComputedState = ({
     ageLastJuly1 == null || isInsured == null || (isInsured == 'yes' && whenInsured == null)
       ? null
       : wasInsuredBeforeJul2000
-        ? 0
-        : Math.max(0, loadingYears - insuredYears);
+      ? 0
+      : Math.max(0, loadingYears - insuredYears);
 
   const continuousCoverageYears = effectiveLoadingYears == 0 ? Math.min(loadingYears, YEARS_SINCE_2000 + 1) : 0;
   const loading = effectiveLoadingYears == null ? null : Math.min(0.7, effectiveLoadingYears * 0.02);
   const loadingCode = wasBornBeforeJuly1934
     ? 'before1934'
     : effectiveLoadingYears == null
-      ? null
-      : !shouldAccrueLoading
-        ? 'under31'
-        : effectiveLoadingYears == 0
-          ? 'continuous'
-          : 'without';
+    ? null
+    : !shouldAccrueLoading
+    ? 'under31'
+    : effectiveLoadingYears == 0
+    ? 'continuous'
+    : 'without';
   const totalCoverCost = !effectiveLoadingYears
     ? null
     : (() => {
