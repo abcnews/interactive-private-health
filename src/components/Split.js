@@ -1,4 +1,6 @@
-const { h, Component } = require('preact');
-const styles = require('./Split.css');
+import { h } from 'preact';
+import styles from './Split.css';
 
-module.exports = ({ children }) => <div className={styles.root}>{children}</div>;
+const Split = ({ children }) => <div className={styles.root}>{children}</div>;
+
+export default Split;

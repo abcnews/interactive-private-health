@@ -1,6 +1,6 @@
-const { h, Component } = require('preact');
-const styles = require('./AdaptiveFlow.css');
+import { h } from 'preact';
+import styles from './AdaptiveFlow.css';
 
-module.exports = ({ children, partitioned }) => (
-  <div className={`${styles.root}${partitioned ? ` ${styled.partitioned}` : ''}`}>{children}</div>
-);
+const AdaptiveFlow = ({ children }) => <div className={styles.root}>{children}</div>;
+
+export default AdaptiveFlow;

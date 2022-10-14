@@ -113,7 +113,7 @@ button + .dropdown::after {
   left: 0;
   height: 100%;
   background-color: inherit;
-  background-image: url(./Selector.svg);
+  background-image: var(--dropdown-image);
   background-position: calc(100% - 0.625rem) calc(50% - 0.0625rem);
   background-repeat: no-repeat;
   background-size: 0.875rem 0.4375rem;

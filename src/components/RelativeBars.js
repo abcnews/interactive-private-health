@@ -1,8 +1,8 @@
-const { h, Component } = require('preact');
-const { FORMATS } = require('./App.config');
-const styles = require('./RelativeBars.css');
+import { h } from 'preact';
+import { FORMATS } from './App.config';
+import styles from './RelativeBars.css';
 
-module.exports = ({ items, color }) => {
+const RelativeBars = ({ items, color }) => {
   const names = Object.keys(items);
   const maxPct = names.reduce((memo, name) => Math.max(memo, items[name]), 0);
 
@@ -14,7 +14,10 @@ module.exports = ({ items, color }) => {
           <div className={styles.value}>
             <div
               className={styles.bar}
-              style={{ width: FORMATS.percentage(items[name] / maxPct), backgroundColor: color }}
+              style={{
+                width: FORMATS.percentage(items[name] / maxPct),
+                backgroundColor: color
+              }}
             >
               <span className={styles.label}>{FORMATS.percentage(items[name])}</span>
             </div>
@@ -24,3 +27,5 @@ module.exports = ({ items, color }) => {
     </div>
   );
 };
+
+export default RelativeBars;

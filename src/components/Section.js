@@ -1,5 +1,5 @@
-const { h, Component } = require('preact');
-const styles = require('./Section.css');
+import { h, Component } from 'preact';
+import styles from './Section.css';
 
 class Section extends Component {
   constructor(props) {
@@ -33,4 +33,4 @@ class Section extends Component {
   }
 }
 
-module.exports = Section;
+export default Section;

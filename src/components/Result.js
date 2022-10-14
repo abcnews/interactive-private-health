@@ -1,4 +1,6 @@
-const { h, Component } = require('preact');
-const styles = require('./Result.css');
+import { h } from 'preact';
+import styles from './Result.css';
 
-module.exports = ({ children }) => <span className={styles.root}>{children}</span>;
+const Result = ({ children }) => <span className={styles.root}>{children}</span>;
+
+export default Result;

@@ -1,4 +1,6 @@
-const { h, Component } = require('preact');
-const styles = require('./Blocker.css');
+import { h } from 'preact';
+import styles from './Blocker.css';
 
-module.exports = () => <p className={styles.root}>To continue reading, please complete the section above</p>;
+const Blocker = () => <p className={styles.root}>To continue reading, please complete the section above</p>;
+
+export default Blocker;

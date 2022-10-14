@@ -1,8 +1,8 @@
-const { h, Component } = require('preact');
-const { FORMATS, PREMIUMS_2018 } = require('./App.config');
-const styles = require('./PremiumsTable.css');
+import { h } from 'preact';
+import { FORMATS, PREMIUMS_2018 } from './App.config';
+import styles from './PremiumsTable.css';
 
-module.exports = ({ household }) => (
+const PremiumsTable = ({ household }) => (
   <table className={styles.root}>
     <thead>
       <tr>
@@ -42,3 +42,5 @@ module.exports = ({ household }) => (
     </tbody>
   </table>
 );
+
+export default PremiumsTable;

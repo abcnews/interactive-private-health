@@ -3,14 +3,13 @@ const TODAY = (now => (now.setHours(0, 0, 0, 0), now))(new Date());
 const THIS_YEAR = TODAY.getFullYear();
 const JUL_1_THIS_YEAR = new Date(THIS_YEAR, 6, 1);
 const JUL_1_LAST_YEAR = new Date(THIS_YEAR - 1, 6, 1);
-const JUL_1_MOST_RECENT = (module.exports.JUL_1_MOST_RECENT =
-  JUL_1_THIS_YEAR <= TODAY ? JUL_1_THIS_YEAR : JUL_1_LAST_YEAR);
+export const JUL_1_MOST_RECENT = JUL_1_THIS_YEAR <= TODAY ? JUL_1_THIS_YEAR : JUL_1_LAST_YEAR;
 const JUL_1_2000 = new Date(2000, 6, 1);
 const JUL_1_1934 = new Date(1934, 6, 1);
 const YEARS_SINCE_2000 = Math.floor((JUL_1_MOST_RECENT - JUL_1_2000) / YEAR_MS);
 const YEARS_SINCE_1934 = Math.floor((JUL_1_MOST_RECENT - JUL_1_1934) / YEAR_MS);
 
-const FIELDS = (module.exports.FIELDS = {
+export const FIELDS = {
   relationship: { choices: ['single', 'couple'] },
   children: {
     choices: Array.apply(null, { length: 16 }).map(String.call, String),
@@ -72,9 +71,9 @@ const FIELDS = (module.exports.FIELDS = {
   },
   sex: { choices: ['male', 'female'] },
   isWorthIt: { choices: ['yes', 'no'], shouldLock: true }
-});
+};
 
-module.exports.DEV_STATE = {
+export const DEV_STATE = {
   relationship: 'single',
   income: '100000',
   children: '0',
@@ -92,7 +91,7 @@ const PATTERNS = {
   amount: /\B(?=(\d{3})+(?!\d))/g
 };
 
-const FORMATS = (module.exports.FORMATS = {
+export const FORMATS = {
   amount: x => x.toString().replace(PATTERNS.amount, ','),
   dollarAmount: x => `$${FORMATS.amount(x)}`,
   percentage: x => {
@@ -101,20 +100,20 @@ const FORMATS = (module.exports.FORMATS = {
 
     return `${fixedPct.indexOf('.0') > -1 ? Math.round(pct) : fixedPct}%`;
   }
-});
+};
 
-const ORDINAL = (module.exports.ORDINAL = ['zero', 'one', 'two', 'three', 'four', 'five']);
+export const ORDINAL = ['zero', 'one', 'two', 'three', 'four', 'five'];
 
-module.exports.LINKS = {
+export const LINKS = {
   surcharge:
     'https://www.ato.gov.au/Individuals/Tax-Return/2017/Tax-return/Medicare-levy-questions-M1-M2/M2-Medicare-levy-surcharge-(MLS)-2017/'
 };
 
 const SURCHARGES = [0, 0.01, 0.0125, 0.015]; // x=tier
 
-const LOW_INCOME_THRESHOLD = (module.exports.LOW_INCOME_THRESHOLD = 21655);
+export const LOW_INCOME_THRESHOLD = 21655;
 
-const PREMIUMS_2018 = (module.exports.PREMIUMS_2018 = {
+export const PREMIUMS_2018 = {
   basic: {
     single: 1336,
     'single parent': 2245,
@@ -133,9 +132,13 @@ const PREMIUMS_2018 = (module.exports.PREMIUMS_2018 = {
     couple: 3738,
     family: 3747
   }
-});
+};
 
-const REBATES = [[0.2542, 0.1694, 0.0847, 0], [0.2965, 0.2118, 0.1271, 0], [0.3389, 0.2542, 0.1694, 0]]; // x=age; y=tier
+const REBATES = [
+  [0.2542, 0.1694, 0.0847, 0],
+  [0.2965, 0.2118, 0.1271, 0],
+  [0.3389, 0.2542, 0.1694, 0]
+]; // x=age; y=tier
 
 const KNOWN_PREMIUM_RISES = {
   2018: 0.0395,
@@ -174,9 +177,7 @@ const MEDIUM_SINGLE_PREMIUMS_2000_TO_TEN_YEARS_FROM_NOW = (() => {
 
   return premiums;
 })();
-const FIRST_YEAR_LOADING = (module.exports.FIRST_YEAR_LOADING = (
-  MEDIUM_SINGLE_PREMIUMS_2000_TO_TEN_YEARS_FROM_NOW[THIS_YEAR] * 0.02
-).toFixed(2));
+export const FIRST_YEAR_LOADING = (MEDIUM_SINGLE_PREMIUMS_2000_TO_TEN_YEARS_FROM_NOW[THIS_YEAR] * 0.02).toFixed(2);
 
 const LOCATION_CODES = {
   'Australian Capital Territory': 'act',
@@ -191,52 +192,16 @@ const LOCATION_CODES = {
 
 const COVERAGE_PROPORTION = {
   female: [
-    0.386,
-    0.446,
-    0.477,
-    0.442,
-    0.325,
-    0.296,
-    0.457,
-    0.525,
-    0.503,
-    0.524,
-    0.518,
-    0.549,
-    0.575,
-    0.559,
-    0.586,
-    0.524,
-    0.497,
-    0.444,
-    0.357,
-    0.335
+    0.386, 0.446, 0.477, 0.442, 0.325, 0.296, 0.457, 0.525, 0.503, 0.524, 0.518, 0.549, 0.575, 0.559, 0.586, 0.524,
+    0.497, 0.444, 0.357, 0.335
   ],
   male: [
-    0.391,
-    0.448,
-    0.477,
-    0.445,
-    0.305,
-    0.25,
-    0.404,
-    0.484,
-    0.474,
-    0.505,
-    0.496,
-    0.529,
-    0.556,
-    0.529,
-    0.559,
-    0.529,
-    0.511,
-    0.49,
-    0.38,
-    0.259
+    0.391, 0.448, 0.477, 0.445, 0.305, 0.25, 0.404, 0.484, 0.474, 0.505, 0.496, 0.529, 0.556, 0.529, 0.559, 0.529,
+    0.511, 0.49, 0.38, 0.259
   ]
 };
 
-const PROCEDURES = (module.exports.PROCEDURES = [
+export const PROCEDURES = [
   // name, description, admissions, wait, totalCost, pctNoOOPs, oop
   ['ACL repair', 'Knee ligament repair', 0, 0, 8400, 0.2, 420],
   ['Acromioplasty / arthroscopy shoulder / sub acromial decompression', 'Repair shoulder joint', 1726, 85, 0, 0, 0],
@@ -266,77 +231,184 @@ const PROCEDURES = (module.exports.PROCEDURES = [
   ['Tooth extraction', '', 0, 0, 1600, 0.51, 260],
   ['Vasectomy', '', 0, 0, 1900, 0.42, 210],
   ['ACL reconstruction', 'Knee ligament reconstruction', 4050, 78, 0, 0, 0]
-]);
+];
 
 const WAITING_TIMES_PROCEDURES = [
-  [[24, 12], [24, 12]],
-  [[24, 12], [24, 12]],
-  [[24, 12], [24, 12]],
-  [[27, 24], [27, 24]],
-  [[27, 24], [27, 24]],
-  [[27, 19], [27, 14, 3]],
-  [[27, 19], [27, 14, 3]],
-  [[16, 19], [3, 13]],
-  [[16, 17], [3, 13]],
-  [[10, 16], [3, 1]],
-  [[10, 16], [3, 1]],
-  [[18, 20], [21, 5]],
-  [[18, 20], [21, 5]],
-  [[18, 5], [18, 21, 5]],
-  [[18, 5], [18, 21]],
-  [[15, 5], [15, 21, 5]],
-  [[15, 5], [15, 21]],
-  [[15, 5], [15, 21, 5]],
-  [[15, 5], [15, 21, 5]],
-  [[15, 5], [15, 21, 5]],
-  [[15, 5], [15, 21, 5]]
+  [
+    [24, 12],
+    [24, 12]
+  ],
+  [
+    [24, 12],
+    [24, 12]
+  ],
+  [
+    [24, 12],
+    [24, 12]
+  ],
+  [
+    [27, 24],
+    [27, 24]
+  ],
+  [
+    [27, 24],
+    [27, 24]
+  ],
+  [
+    [27, 19],
+    [27, 14, 3]
+  ],
+  [
+    [27, 19],
+    [27, 14, 3]
+  ],
+  [
+    [16, 19],
+    [3, 13]
+  ],
+  [
+    [16, 17],
+    [3, 13]
+  ],
+  [
+    [10, 16],
+    [3, 1]
+  ],
+  [
+    [10, 16],
+    [3, 1]
+  ],
+  [
+    [18, 20],
+    [21, 5]
+  ],
+  [
+    [18, 20],
+    [21, 5]
+  ],
+  [
+    [18, 5],
+    [18, 21, 5]
+  ],
+  [
+    [18, 5],
+    [18, 21]
+  ],
+  [
+    [15, 5],
+    [15, 21, 5]
+  ],
+  [
+    [15, 5],
+    [15, 21]
+  ],
+  [
+    [15, 5],
+    [15, 21, 5]
+  ],
+  [
+    [15, 5],
+    [15, 21, 5]
+  ],
+  [
+    [15, 5],
+    [15, 21, 5]
+  ],
+  [
+    [15, 5],
+    [15, 21, 5]
+  ]
 ]; // x=age; y=sex; z=procedures
 
 const TOP_N_COVERED_PROCEDURES = [
-  [[24, 12, 25, 22, 11], [24, 12, 25, 22, 11]],
-  [[24, 12, 25, 22, 11], [24, 12, 25, 22, 11]],
-  [[24, 12, 25, 22, 11], [24, 12, 25, 22, 11]],
-  [[0, 24, 8, 25, 11], [0, 24, 8, 25, 11]],
-  [[0, 24, 8, 25, 11], [0, 24, 8, 25, 11]],
-  [[6, 7, 0, 19, 8], [0, 14, 3, 23, 8]],
-  [[6, 7, 0, 19, 8], [0, 14, 3, 23, 8]],
-  [[6, 7, 23, 16, 8], [3, 26, 8, 22, 11]],
-  [[6, 7, 23, 16, 8], [3, 26, 8, 22, 11]],
-  [[10, 2, 16, 8, 22], [2, 14, 8, 22, 11]],
-  [[10, 2, 16, 8, 22], [2, 14, 8, 22, 11]],
-  [[18, 2, 8, 22, 11], [21, 5, 8, 9, 11]],
-  [[18, 2, 8, 22, 11], [21, 5, 8, 9, 11]],
-  [[18, 2, 5, 8, 22], [18, 21, 2, 5, 8]],
-  [[18, 2, 5, 8, 22], [18, 21, 2, 5, 8]],
-  [[15, 2, 5, 8, 11], [15, 4, 21, 5, 8]],
-  [[15, 2, 5, 8, 11], [15, 4, 21, 5, 8]],
-  [[15, 2, 5, 8, 11], [15, 4, 21, 5, 8]],
-  [[15, 2, 5, 8, 11], [15, 4, 21, 5, 8]],
-  [[15, 2, 5, 8, 11], [15, 4, 21, 5, 8]],
-  [[15, 2, 5, 8, 11], [15, 4, 21, 5, 8]]
+  [
+    [24, 12, 25, 22, 11],
+    [24, 12, 25, 22, 11]
+  ],
+  [
+    [24, 12, 25, 22, 11],
+    [24, 12, 25, 22, 11]
+  ],
+  [
+    [24, 12, 25, 22, 11],
+    [24, 12, 25, 22, 11]
+  ],
+  [
+    [0, 24, 8, 25, 11],
+    [0, 24, 8, 25, 11]
+  ],
+  [
+    [0, 24, 8, 25, 11],
+    [0, 24, 8, 25, 11]
+  ],
+  [
+    [6, 7, 0, 19, 8],
+    [0, 14, 3, 23, 8]
+  ],
+  [
+    [6, 7, 0, 19, 8],
+    [0, 14, 3, 23, 8]
+  ],
+  [
+    [6, 7, 23, 16, 8],
+    [3, 26, 8, 22, 11]
+  ],
+  [
+    [6, 7, 23, 16, 8],
+    [3, 26, 8, 22, 11]
+  ],
+  [
+    [10, 2, 16, 8, 22],
+    [2, 14, 8, 22, 11]
+  ],
+  [
+    [10, 2, 16, 8, 22],
+    [2, 14, 8, 22, 11]
+  ],
+  [
+    [18, 2, 8, 22, 11],
+    [21, 5, 8, 9, 11]
+  ],
+  [
+    [18, 2, 8, 22, 11],
+    [21, 5, 8, 9, 11]
+  ],
+  [
+    [18, 2, 5, 8, 22],
+    [18, 21, 2, 5, 8]
+  ],
+  [
+    [18, 2, 5, 8, 22],
+    [18, 21, 2, 5, 8]
+  ],
+  [
+    [15, 2, 5, 8, 11],
+    [15, 4, 21, 5, 8]
+  ],
+  [
+    [15, 2, 5, 8, 11],
+    [15, 4, 21, 5, 8]
+  ],
+  [
+    [15, 2, 5, 8, 11],
+    [15, 4, 21, 5, 8]
+  ],
+  [
+    [15, 2, 5, 8, 11],
+    [15, 4, 21, 5, 8]
+  ],
+  [
+    [15, 2, 5, 8, 11],
+    [15, 4, 21, 5, 8]
+  ],
+  [
+    [15, 2, 5, 8, 11],
+    [15, 4, 21, 5, 8]
+  ]
 ]; // x=age; y=sex; z=procedures
 
 const AGE_GROUP_BENEFITS = [
-  373,
-  118,
-  131,
-  360,
-  494,
-  650,
-  749,
-  712,
-  664,
-  757,
-  980,
-  1283,
-  1814,
-  2573,
-  3518,
-  4613,
-  5461,
-  6108,
-  5925,
-  5377
+  373, 118, 131, 360, 494, 650, 749, 712, 664, 757, 980, 1283, 1814, 2573, 3518, 4613, 5461, 6108, 5925, 5377
 ];
 
 const getWaitingProcedures = (age, sex) =>
@@ -388,7 +460,7 @@ const TOP_N_KIDS = getKidsProcedures(getTopNProcedures);
 
 const getBenefits = age => AGE_GROUP_BENEFITS[Math.min(AGE_GROUP_BENEFITS.length - 1, Math.floor(age / 5))];
 
-module.exports.REASONS_FOR_HAVING = {
+export const REASONS_FOR_HAVING = {
   'Security, protection, peace of mind': 0.679,
   'Allows treatment as private patient in hospital': 0.473,
   "Provides benefits for ancillary services, 'extras'": 0.432,
@@ -403,7 +475,7 @@ module.exports.REASONS_FOR_HAVING = {
   'Other reasons': 0.05
 };
 
-module.exports.REASONS_FOR_NOT_HAVING = {
+export const REASONS_FOR_NOT_HAVING = {
   "Can't afford it, too expensive": 0.609,
   'Medicare cover sufficient': 0.291,
   'Lack of value for money, not worth it': 0.177,
@@ -417,7 +489,7 @@ module.exports.REASONS_FOR_NOT_HAVING = {
   Other: 0.06
 };
 
-module.exports.getComputedState = ({
+export const getComputedState = ({
   relationship,
   income,
   children,

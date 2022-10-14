@@ -1,8 +1,8 @@
-const { h, Component } = require('preact');
-const { FORMATS } = require('./App.config');
-const styles = require('./ProceduresTable.css');
+import { h } from 'preact';
+import { FORMATS } from './App.config';
+import styles from './ProceduresTable.css';
 
-module.exports = ({ procedures, columns }) => (
+const ProceduresTable = ({ procedures, columns }) => (
   <table>
     <thead>
       <tr>{[<td />].concat(columns.map(column => <th>{column[1]}</th>))}</tr>
@@ -25,3 +25,5 @@ module.exports = ({ procedures, columns }) => (
     </tbody>
   </table>
 );
+
+export default ProceduresTable;

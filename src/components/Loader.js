@@ -1,8 +1,10 @@
-const { h, Component } = require('preact');
-const styles = require('./Loader.css');
+import { h } from 'preact';
+import styles from './Loader.css';
 
-module.exports = ({ inverted, overlay, children }) => (
+const Loader = ({ inverted, overlay, children }) => (
   <div className={`${styles.root}${inverted ? ` ${styles.isInverted}` : ''}${overlay ? ` ${styles.isOverlay}` : ''}`}>
     {children}
   </div>
 );
+
+export default Loader;

@@ -1,17 +1,17 @@
-const { h, Component } = require('preact');
-const AdaptiveFlow = require('./AdaptiveFlow');
-const Blocker = require('./Blocker');
-const Dev = require('./Dev');
-const Input = require('./Input');
-const Poll = require('./Poll');
-const PremiumsTable = require('./PremiumsTable');
-const ProceduresTable = require('./ProceduresTable');
-const RelativeBars = require('./RelativeBars');
-const Result = require('./Result');
-const Section = require('./Section');
-const Selector = require('./Selector');
-const Split = require('./Split');
-const {
+import { h, Component } from 'preact';
+import AdaptiveFlow from './AdaptiveFlow';
+import Blocker from './Blocker';
+import Dev from './Dev';
+import Input from './Input';
+import Poll from './Poll';
+import PremiumsTable from './PremiumsTable';
+import ProceduresTable from './ProceduresTable';
+import RelativeBars from './RelativeBars';
+import Result from './Result';
+import Section from './Section';
+import Selector from './Selector';
+import Split from './Split';
+import {
   DEV_STATE,
   FIELDS,
   FIRST_YEAR_LOADING,
@@ -23,8 +23,8 @@ const {
   REASONS_FOR_HAVING,
   REASONS_FOR_NOT_HAVING,
   getComputedState
-} = require('./App.config');
-const styles = require('./App.css');
+} from './App.config';
+import styles from './App.css';
 
 // console.clear();
 // const tests = [
@@ -217,7 +217,8 @@ class App extends Component {
               }
               <a href={LINKS.surcharge} target="_blank">
                 Find more information on what is included
-              </a>.
+              </a>
+              .
             </small>
           </p>
         </Section>
@@ -324,21 +325,18 @@ class App extends Component {
           </h4>
           {this.renderField('ageLastJuly1')}
         </Section>
-        {this.has(['ageLastJuly1']) &&
-          !this.computedState.wasBornBeforeJuly1934 && (
-            <Section key="isInsuredField">
-              <h4>Do you have private health insurance?</h4>
-              {this.renderField('isInsured')}
-            </Section>
-          )}
-        {this.has(['ageLastJuly1']) &&
-          !this.computedState.wasBornBeforeJuly1934 &&
-          this.state.isInsured === 'yes' && (
-            <Section key="whenInsuredField">
-              <h4>When did you take out cover?</h4>
-              {this.renderField('whenInsured')}
-            </Section>
-          )}
+        {this.has(['ageLastJuly1']) && !this.computedState.wasBornBeforeJuly1934 && (
+          <Section key="isInsuredField">
+            <h4>Do you have private health insurance?</h4>
+            {this.renderField('isInsured')}
+          </Section>
+        )}
+        {this.has(['ageLastJuly1']) && !this.computedState.wasBornBeforeJuly1934 && this.state.isInsured === 'yes' && (
+          <Section key="whenInsuredField">
+            <h4>When did you take out cover?</h4>
+            {this.renderField('whenInsured')}
+          </Section>
+        )}
         {this.has(['ageLastJuly1', 'loading']) && (
           <Section key="loadingResults">
             <h3>
@@ -346,54 +344,51 @@ class App extends Component {
               <br />
               {this.renderResult('loading', 'percentage')}
             </h3>
-            {this.computedState.loadingCode !== 'before1934' &&
-              this.computedState.loadingCode !== 'continuous' && (
-                <p>
-                  {`Let’s look at how much money you've saved and how much extra you'll spend, based on ${
-                    this.state.isInsured === 'no' ? 'your decision to not' : 'when you decided to'
-                  } take out hospital cover.`}
-                  {this.state.relationship !== 'single' && ` We’re assuming for this calculation that you are single.`}
-                </p>
-              )}
+            {this.computedState.loadingCode !== 'before1934' && this.computedState.loadingCode !== 'continuous' && (
+              <p>
+                {`Let’s look at how much money you've saved and how much extra you'll spend, based on ${
+                  this.state.isInsured === 'no' ? 'your decision to not' : 'when you decided to'
+                } take out hospital cover.`}
+                {this.state.relationship !== 'single' && ` We’re assuming for this calculation that you are single.`}
+              </p>
+            )}
           </Section>
         )}
-        {this.has(['ageLastJuly1', 'loading']) &&
-          this.computedState.loadingCode === 'continuous' && (
-            <Section key="loadingCodeResults">
-              <p>
-                {`According to your answers, you have had continuous cover since ${
-                  this.computedState.wasInsuredBeforeJul2000
-                    ? 'July 1st 2000'
-                    : 'the July 1st following your 31st birthday'
-                }, so you don’t
+        {this.has(['ageLastJuly1', 'loading']) && this.computedState.loadingCode === 'continuous' && (
+          <Section key="loadingCodeResults">
+            <p>
+              {`According to your answers, you have had continuous cover since ${
+                this.computedState.wasInsuredBeforeJul2000
+                  ? 'July 1st 2000'
+                  : 'the July 1st following your 31st birthday'
+              }, so you don’t
               have to pay a Lifetime Health Cover loading.`}
-                {this.computedState.continuousCoverageCost && ' But you have paid '}
-                {this.computedState.continuousCoverageCost && this.renderResult('continuousCoverageCost')}
-                {this.computedState.continuousCoverageCost && ' for hospital insurance on average in that time.'}
-              </p>
-            </Section>
-          )}
-        {this.has(['ageLastJuly1', 'loading']) &&
-          this.computedState.loadingCode === 'without' && (
-            <Section key="loadingCodeResults">
-              <p>
-                {`According to your answers, you have had `}
-                <Result>{`${this.computedState.effectiveLoadingYears} year${
-                  this.computedState.effectiveLoadingYears === 1 ? '' : 's'
-                }`}</Result>
-                {` over age 30 with no cover, so${
-                  this.state.isInsured === 'yes' ? '' : ' if you take out insurance'
-                } that means you'${this.computedState.insuredYears >= 10 ? 've already paid' : 'll pay'} `}
-                {this.renderResult('totalCoverLoadingCost')}
-                {` more for singles medium cover over 10 years than someone who took out hospital cover early enough to avoid the loading. But by not having cover${
-                  this.state.isInsured === 'yes' ? '' : ' since the loading was introduced in 2000'
-                }, you have saved `}
-                {this.renderResult('totalCoverCost')}
-                {` in premiums on average compared with someone the same age as
+              {this.computedState.continuousCoverageCost && ' But you have paid '}
+              {this.computedState.continuousCoverageCost && this.renderResult('continuousCoverageCost')}
+              {this.computedState.continuousCoverageCost && ' for hospital insurance on average in that time.'}
+            </p>
+          </Section>
+        )}
+        {this.has(['ageLastJuly1', 'loading']) && this.computedState.loadingCode === 'without' && (
+          <Section key="loadingCodeResults">
+            <p>
+              {`According to your answers, you have had `}
+              <Result>{`${this.computedState.effectiveLoadingYears} year${
+                this.computedState.effectiveLoadingYears === 1 ? '' : 's'
+              }`}</Result>
+              {` over age 30 with no cover, so${
+                this.state.isInsured === 'yes' ? '' : ' if you take out insurance'
+              } that means you'${this.computedState.insuredYears >= 10 ? 've already paid' : 'll pay'} `}
+              {this.renderResult('totalCoverLoadingCost')}
+              {` more for singles medium cover over 10 years than someone who took out hospital cover early enough to avoid the loading. But by not having cover${
+                this.state.isInsured === 'yes' ? '' : ' since the loading was introduced in 2000'
+              }, you have saved `}
+              {this.renderResult('totalCoverCost')}
+              {` in premiums on average compared with someone the same age as
               you.`}
-              </p>
-            </Section>
-          )}
+            </p>
+          </Section>
+        )}
         {this.computedState.loadingCode === 'under31' && (
           <Section key="loadingCodeResults">
             <p>
@@ -548,4 +543,4 @@ class App extends Component {
   }
 }
 
-module.exports = App;
+export default App;

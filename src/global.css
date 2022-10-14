@@ -6,7 +6,7 @@
   --color-secondary-saturated: #62757a;
   --color-grey: #666;
   --font-sans: ABCSans, Helvetica, Arial, sans-serif;
-  --font-serif: ABCSerif, "Book Antiqua", "Palatino Linotype", Palatino, serif;
+  --font-serif: ABCSerif, 'Book Antiqua', 'Palatino Linotype', Palatino, serif;
 }
 
 :global(.BannerContainer) {
@@ -30,12 +30,4 @@
   border: 0;
   width: 100%;
   height: 100%;
-}
-
-[embedded] > iframe {
-  background-color: white;
-}
-
-[embedded] > :not(iframe) {
-  display: none;
 }

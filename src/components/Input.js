@@ -1,5 +1,6 @@
-const { h, Component } = require('preact');
-const styles = require('./Input.css');
+import { h, Component } from 'preact';
+import buttonImage from './Input.svg';
+import styles from './Input.css';
 
 const NON_NUMERIC_PATTERN = /[^\d.-]/g;
 
@@ -61,7 +62,7 @@ class Input extends Component {
 
   render({ type, name, value, placeholder, attributes = {} }) {
     return (
-      <div>
+      <div style={`--button-image: url(${buttonImage})`}>
         <form
           className={`${styles.root}${this.state.value !== null ? ` ${styles.editing}` : ''}`}
           onSubmit={this.onSubmit}
@@ -84,4 +85,4 @@ class Input extends Component {
   }
 }
 
-module.exports = Input;
+export default Input;

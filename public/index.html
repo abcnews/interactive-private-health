@@ -1,26 +1,32 @@
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    body {
-      margin: 0;
-    }
-  </style>
-</head>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>[interactive-private-health]</title>
+    <style>
+      :root {
+        box-sizing: border-box;
+      }
 
-<body class="platform-mobile">
-  <div id="abcHeader" class="global"></div>
-  <div class="content">
-    <article>
-      <header>
-        <h1>Private health insurance</h1>
-      </header>
-      <div class="story richtext">
-        <div data-interactive-private-health-root data-content-url="./content.html"></div>
+      *,
+      *::before,
+      *::after {
+        box-sizing: inherit;
+      }
+    </style>
+    <script src="index.js"></script>
+  </head>
+  <body>
+    <div class="Main">
+      <div class="Header">
+        <div class="Header-media"></div>
       </div>
-    </article>
-  </div>
-  <script src="http://www.abc.net.au/res/sites/news-projects/odyssey/3.5.1/index.js"></script>
-  <script type="module" src="index.modules.js"></script>
-  <script nomodule src="index.js"></script>
-</body>
+      <!-- CONTENT is "./content.html" (encoded as base36 by https://www.abc.net.au/res/sites/news-projects/base-36-text-converter/1.0.0/) -->
+      <div data-mount id="privatehealthCONTENT1y2qykwm7ksmlioh4q4ui4"></div>
+    </div>
+    <script>
+      window.dispatchEvent(new CustomEvent('odyssey:api'));
+    </script>
+  </body>
+</html>

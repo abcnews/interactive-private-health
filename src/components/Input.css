@@ -67,7 +67,7 @@
   width: 1.9375rem;
   height: 2.375rem;
   border: none;
-  background-image: url(./Input.svg);
+  background-image: var(--button-image);
   background-position: center;
   background-repeat: no-repeat;
   background-size: 0.3125rem 0.5625rem;

@@ -1,5 +1,6 @@
-const { h, Component } = require('preact');
-const styles = require('./Selector.css');
+import { h, Component } from 'preact';
+import dropdownImage from './Selector.svg';
+import styles from './Selector.css';
 
 const NO_OPTION = '---';
 const NO_OPTION_LABEL = '– – –';
@@ -67,7 +68,12 @@ class Selector extends Component {
     let optionChoices = choices.length >= 3 ? [null].concat(choices.slice(asButtons)) : [];
 
     return (
-      <div className={styles.root} data-name={name} onKeyDown={this.onKeyDown}>
+      <div
+        className={styles.root}
+        style={`--dropdown-image: url(${dropdownImage})`}
+        data-name={name}
+        onKeyDown={this.onKeyDown}
+      >
         {buttonChoices
           .map(choice => (
             <button
@@ -94,10 +100,10 @@ class Selector extends Component {
                       value && buttonChoices.indexOf(value) === -1
                         ? value
                         : noOptionLabel
-                          ? noOptionLabel
-                          : buttonChoices.length
-                            ? NO_OPTION_FOLLOWING_BUTTONS_LABEL
-                            : NO_OPTION_LABEL
+                        ? noOptionLabel
+                        : buttonChoices.length
+                        ? NO_OPTION_FOLLOWING_BUTTONS_LABEL
+                        : NO_OPTION_LABEL
                     }
                   >
                     <select onChange={this.onChange} disabled={shouldLock && value !== null}>
@@ -117,7 +123,7 @@ class Selector extends Component {
   }
 }
 
-module.exports = Selector;
+export default Selector;
 
 /*
 [1] Firefox decrements/increments select values on left/right arrow presses, so we
