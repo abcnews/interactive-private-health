@@ -1,25 +1,25 @@
 {
-  "name": "interactive-private-health",
-  "version": "1.16.2",
-  "description": "A project generated from aunty's preact app template.",
-  "license": "MIT",
-  "private": true,
-  "contributors": [
-    "Colin Gourlay <Gourlay.Colin@abc.net.au>"
-  ],
-  "scripts": {
-    "start": "aunty serve"
-  },
-  "devDependencies": {
-    "@abcnews/aunty": "^13.0.3"
-  },
-  "dependencies": {
-    "@abcnews/base-36-text": "^1.0.0",
-    "@abcnews/env-utils": "^3.0.1",
-    "@abcnews/mount-utils": "^2.0.0",
-    "@abcnews/poll-counters-client": "^1.1.0",
-    "preact": "^10.11.1",
-    "react-countup": "^4.3.3",
-    "regenerator-runtime": "^0.13.10"
-  }
+	"name": "interactive-private-health",
+	"version": "2.0.0",
+	"description": "A project generated from aunty's preact app template.",
+	"license": "MIT",
+	"private": true,
+	"contributors": [
+		"Colin Gourlay <Gourlay.Colin@abc.net.au>"
+	],
+	"scripts": {
+		"start": "aunty serve"
+	},
+	"devDependencies": {
+		"@abcnews/aunty": "^13.0.3"
+	},
+	"dependencies": {
+		"@abcnews/base-36-text": "^1.0.0",
+		"@abcnews/env-utils": "^3.0.1",
+		"@abcnews/mount-utils": "^2.0.0",
+		"@abcnews/poll-counters-client": "^1.1.0",
+		"preact": "^10.11.1",
+		"react-countup": "^4.3.3",
+		"regenerator-runtime": "^0.13.10"
+	}
 }
